@@ -156,43 +156,58 @@ export default function MatchPage() {
           <p className="mb-4">
             <span className="heading-eyebrow">軸別の比較</span>
           </p>
+          <p className="serif mb-10 text-[13px] font-light italic tracking-wide text-white/55">
+            あなた自身 と、あなたが惹かれる相手
+          </p>
 
-          {/* Legend */}
-          <div className="mb-10 flex items-center justify-end gap-5 text-[10px] tracking-[0.15em]">
-            <span className="flex items-center gap-2 text-white/60">
-              <span className="inline-block h-2 w-2 rounded-full bg-white/70" />
-              自分
-            </span>
-            <span className="flex items-center gap-2 text-[var(--accent)]">
-              <span className="inline-block h-2 w-2 rounded-full bg-[var(--accent)]" />
-              惹かれる
-            </span>
-          </div>
-
-          <div className="space-y-10">
+          <div className="space-y-12">
             {match.axisCompare.map((axis) => {
               const [leftCode, leftLabel, , rightLabel, rightCode] = axis.label.split(" ")
               return (
                 <div key={axis.label}>
-                  <div className="mb-3 flex items-baseline justify-between text-[11px] tracking-wider">
-                    <span className="serif text-white/75">
-                      <span className="text-[var(--accent)] mr-1">{leftCode}</span>
+                  <div className="mb-4 flex items-baseline justify-between text-[12px] tracking-wider">
+                    <span className="serif text-white/85">
+                      <span className="text-[var(--accent)] mr-1.5">{leftCode}</span>
                       {leftLabel}
                     </span>
-                    <span className="serif text-white/75">
+                    <span className="serif text-white/85">
                       {rightLabel}
-                      <span className="text-[var(--accent)] ml-1">{rightCode}</span>
+                      <span className="text-[var(--accent)] ml-1.5">{rightCode}</span>
                     </span>
                   </div>
-                  <div className="relative h-1 w-full bg-white/5">
+                  <div className="relative h-px w-full bg-white/10 mt-8 mb-8">
+                    {/* Self marker - top */}
                     <div
-                      className="absolute -top-1.5 h-4 w-[2px] bg-white/80"
-                      style={{ left: `${axis.self}%` }}
-                    />
+                      className="absolute z-10"
+                      style={{
+                        left: `${axis.self}%`,
+                        top: "-22px",
+                        transform: "translateX(-50%)",
+                      }}
+                    >
+                      <div className="flex flex-col items-center">
+                        <span className="serif text-[10px] tracking-wide text-white whitespace-nowrap mb-1">
+                          自分
+                        </span>
+                        <span className="text-white text-[10px] leading-none">▼</span>
+                      </div>
+                    </div>
+                    {/* Attraction marker - bottom */}
                     <div
-                      className="absolute -bottom-1.5 h-4 w-[2px] bg-[var(--accent)]"
-                      style={{ left: `${axis.attraction}%` }}
-                    />
+                      className="absolute z-10"
+                      style={{
+                        left: `${axis.attraction}%`,
+                        top: "0",
+                        transform: "translateX(-50%)",
+                      }}
+                    >
+                      <div className="flex flex-col items-center">
+                        <span className="text-[var(--accent)] text-[10px] leading-none">▲</span>
+                        <span className="serif text-[10px] tracking-wide text-[var(--accent)] whitespace-nowrap mt-1">
+                          惹かれる相手
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )

@@ -385,9 +385,10 @@ export function calculateMatch(
     ["selfT", "selfF", "attractT", "attractF", "T 論理 — 共感 F"],
     ["selfJ", "selfP", "attractJ", "attractP", "J 計画 — 即興 P"],
   ] as const
+  // ラベル左側の文字が低%、右側の文字が高% になるよう逆算
   const axisCompare = dimensions.map(([sA, sB, aA, aB, label]) => {
-    const sScore = (scores[sA] ?? 0) - (scores[sB] ?? 0)
-    const aScore = (scores[aA] ?? 0) - (scores[aB] ?? 0)
+    const sScore = (scores[sB] ?? 0) - (scores[sA] ?? 0)
+    const aScore = (scores[aB] ?? 0) - (scores[aA] ?? 0)
     return {
       label,
       self: Math.round(((sScore + 10) / 20) * 100),
