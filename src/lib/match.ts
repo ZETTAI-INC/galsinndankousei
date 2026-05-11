@@ -1,4 +1,5 @@
 import type { AnalysisScores, MatchResult } from "./types"
+import { createSeededRandom, hashScores } from "./seed"
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // MBTI判定
@@ -215,8 +216,12 @@ const INSIGHT_PATTERNS: readonly InsightPattern[] = [
 
 function detectInsights(scores: AnalysisScores): readonly string[] {
   const matched = INSIGHT_PATTERNS.filter((p) => p.condition(scores))
-  // ランダム要素入れて毎回違う組み合わせにする
-  const shuffled = [...matched].sort(() => Math.random() - 0.5)
+  // 決定論的: 同じスコアなら同じ組み合わせ
+  const rng = createSeededRandom(hashScores(scores))
+  const shuffled = [...matched]
+    .map((p) => ({ p, r: rng() }))
+    .sort((a, b) => a.r - b.r)
+    .map((x) => x.p)
   return shuffled.slice(0, 4).map((p) => p.text)
 }
 

@@ -1,4 +1,5 @@
 import type { AnalysisScores, AttractedType, LovedByResult } from "./types"
+import { createSeededRandom, hashScores } from "./seed"
 
 function high(scores: AnalysisScores, axis: string, threshold = 4): boolean {
   return (scores[axis] ?? 0) >= threshold
@@ -236,8 +237,12 @@ const SIGNAL_PATTERNS: readonly SignalPattern[] = [
 
 function selectSignals(scores: AnalysisScores): readonly string[] {
   const matched = SIGNAL_PATTERNS.filter((p) => p.condition(scores))
-  // 上位を優先しつつ、ランダム性も入れる
-  const shuffled = [...matched].sort(() => Math.random() - 0.5)
+  // 決定論的シャッフル
+  const rng = createSeededRandom(hashScores(scores))
+  const shuffled = [...matched]
+    .map((p) => ({ p, r: rng() }))
+    .sort((a, b) => a.r - b.r)
+    .map((x) => x.p)
   return [...new Set(shuffled.map((p) => p.text))].slice(0, 12)
 }
 

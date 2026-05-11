@@ -1,5 +1,6 @@
 import type { AnalysisScores } from "./types"
 import { getSelfMbtiInfo } from "./match"
+import { createSeededRandom, hashScores } from "./seed"
 
 // 気になる人のMBTIを判定
 export function determineOtherMbti(scores: AnalysisScores): string {
@@ -140,12 +141,14 @@ export function generateOtherMatch(scores: AnalysisScores): OtherMatchResult {
   const baseByCount = [25, 40, 58, 76, 92][matchCount]
   const matchPercent = Math.max(8, Math.min(98, Math.round(baseByCount + alignment * 8)))
 
-  // インサイト
+  // インサイト（決定論的）
   const matchedInsights = OTHER_INSIGHT_PATTERNS.filter((p) => p.condition(scores))
+  const insightsRng = createSeededRandom(hashScores(scores))
   const insights = [...matchedInsights]
-    .sort(() => Math.random() - 0.5)
+    .map((p) => ({ p, r: insightsRng() }))
+    .sort((a, b) => a.r - b.r)
     .slice(0, 4)
-    .map((p) => p.text)
+    .map((x) => x.p.text)
 
   // 軸比較（MBTI順: E/I → S/N → T/F → J/P）
   const orderedDims = [
