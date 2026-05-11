@@ -87,14 +87,15 @@ export default function ResultPage() {
 
   const handleShareTwitter = useCallback(() => {
     if (!result) return
-    const text = `私が惹かれるタイプ「${result.displayName}」だった。希少度${result.rarityPercent}%。当たりすぎてて笑った`
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`
+    const tagline = result.tagline.slice(0, 30)
+    const text = `私が惹かれるのは『${result.displayName}』らしい\n${result.displayType}系 / 希少度${result.rarityPercent}%\n\n「${tagline}」\n\n当たりすぎてて怖い`
+    const url = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`
     window.open(url, "_blank")
   }, [result, siteUrl])
 
   const handleShareLINE = useCallback(() => {
     if (!result) return
-    const text = `恋愛MBTI診断やったら「${result.displayName}」だった。希少度${result.rarityPercent}%、怖いくらい当たってる\n${siteUrl}`
+    const text = `恋愛MBTI診断で私が惹かれるタイプ出した\n→『${result.displayName}』(${result.displayType}系)\n希少度${result.rarityPercent}%、めっちゃ当たってた\n\nあなたもやってみて↓\n${siteUrl}`
     const url = `https://line.me/R/share?text=${encodeURIComponent(text)}`
     window.open(url, "_blank")
   }, [result, siteUrl])

@@ -1,5 +1,6 @@
 import type { AnalysisScores, Phase1Type, Phase3Type, Question } from "./types"
 import { phase2Questions, phase3Questions } from "./questions"
+import { allExtraQuestions } from "./questions-extra"
 
 type MbtiAxisPair = "EI" | "JP" | "TF" | "SN"
 
@@ -69,12 +70,13 @@ export function selectAdaptivePhase2(
   const uncertainty = calculateMbtiUncertainty(scores)
   const preferredSet = new Set(phase2Questions[phase1Type])
 
-  // 全32問プールから選択
+  // 全32問プール + 軸補完用追加6問 = 38問から選択
   const allPhase2: Question[] = [
     ...phase2Questions.EJ,
     ...phase2Questions.EP,
     ...phase2Questions.IJ,
     ...phase2Questions.IP,
+    ...allExtraQuestions, // 250-255: neglectTolerance / emotional / saveDesire 補強
   ]
 
   const scored = allPhase2.map((q) => {

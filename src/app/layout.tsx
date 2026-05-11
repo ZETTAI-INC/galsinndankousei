@@ -35,11 +35,20 @@ export const metadata: Metadata = {
     title: "あなたが惹かれる16タイプ｜恋愛MBTI診断",
     description: "24の質問で、あなたが無意識に選んでしまう人を紐解く。",
     type: "website",
+    images: [
+      {
+        url: "/api/og",
+        width: 1200,
+        height: 630,
+        alt: "あなたが惹かれる16タイプ｜恋愛MBTI診断",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "あなたが惹かれる16タイプ｜恋愛MBTI診断",
     description: "24の質問で、あなたが無意識に選んでしまう人を紐解く。",
+    images: ["/api/og"],
   },
 }
 
