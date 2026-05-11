@@ -142,35 +142,28 @@ export default function MyPage() {
   }
 
   return (
-    <div className="min-h-dvh px-6 py-20">
+    <div className="min-h-dvh px-6 py-12">
       <div className="mx-auto max-w-2xl">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <div className="animate-fade-in mb-10">
-            <span className="heading-eyebrow">診断シート</span>
+        {/* Compact Header */}
+        <div className="mb-8 flex items-end justify-between">
+          <div>
+            <h1 className="title-editorial mb-1 text-[28px] sm:text-[34px]">
+              <em>マイページ</em>
+            </h1>
+            <p className="serif text-[12px] tracking-wide text-white/55">
+              診断履歴のシート
+            </p>
           </div>
 
-          <h1 className="title-editorial animate-blur-in mb-8 text-[36px] sm:text-[44px]">
-            <em>マイページ</em>
-          </h1>
-
-          <div className="mx-auto mb-8 h-px w-16 bg-[var(--accent)] opacity-50" />
-
-          <p className="serif mx-auto max-w-sm text-[14px] font-light leading-[2.1] tracking-wide text-white/75">
-            あなたの診断履歴を、ひとつのシートに。
-          </p>
-        </div>
-
-        {/* Progress badge */}
-        <div className="mb-16 flex justify-center">
+          {/* Progress badge - inline */}
           <div className="rarity-badge">
-            <span className="text-[10px] tracking-[0.25em] text-white/50">
-              COLLECTED
+            <span className="text-[9px] tracking-[0.2em] text-white/50">
+              取得
             </span>
-            <span className="serif text-[24px] font-light text-[var(--accent)]">
+            <span className="serif text-[20px] font-light text-[var(--accent)]">
               {completedCount}
             </span>
-            <span className="text-[12px] text-white/40">/ {totalCount}</span>
+            <span className="text-[10px] text-white/40">/{totalCount}</span>
           </div>
         </div>
 

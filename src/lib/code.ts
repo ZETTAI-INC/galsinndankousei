@@ -1,7 +1,6 @@
-import type { AnalysisScores } from "./types"
+import type { AnalysisAxis, AnalysisScores } from "./types"
 
-const VERSION = 1
-const PREFIX = "NMR"
+const VERSION = "1"
 
 export interface SharedData {
   readonly version: number
@@ -13,69 +12,89 @@ export interface SharedData {
   readonly hasOther: boolean
 }
 
-// 0スコアの軸を除外して圧縮
-function compactScores(scores: AnalysisScores): AnalysisScores {
-  const result: Record<string, number> = {}
-  for (const [k, v] of Object.entries(scores)) {
-    if (v && v !== 0) result[k] = v
-  }
-  return result
-}
+// 固定順序の軸（追加時は末尾のみに追加 = 後方互換性維持）
+const ENCODE_AXES: readonly AnalysisAxis[] = [
+  // attract系（8軸）
+  "attractE", "attractI", "attractJ", "attractP",
+  "attractT", "attractF", "attractS", "attractN",
+  // self系（8軸）
+  "selfE", "selfI", "selfJ", "selfP",
+  "selfT", "selfF", "selfS", "selfN",
+  // 性格軸（20軸）
+  "lowTempEmotion", "lateNightVibe", "urbanSense", "dailyLifeFeel",
+  "awkwardness", "neglectTolerance", "loveExpression", "lineTemperature",
+  "humanity", "emotionalInstabilityTolerance", "silenceDependency",
+  "innocenceTolerance", "conversationDensity", "distanceSense",
+  "independence", "vibeMatch", "edginessTolerance", "caretakerDependency",
+  "understandDesire", "saveDesire",
+]
+// 計36軸 × 2桁 = 72桁
 
 function hasPrefix(scores: AnalysisScores, prefix: string): boolean {
-  return Object.keys(scores).some((k) => k.startsWith(prefix))
+  return Object.keys(scores).some((k) => k.startsWith(prefix) && (scores[k] ?? 0) !== 0)
 }
 
+function computeChecksum(s: string): string {
+  let sum = 0
+  for (const ch of s) sum += parseInt(ch, 10) || 0
+  return (sum % 100).toString().padStart(2, "0")
+}
+
+// 数字のみエンコード（4桁ごとに区切り）
 export function encodeShareCode(input: {
   scores: AnalysisScores
   gender?: string
-  otherName?: string
 }): string {
-  const compact = {
-    v: VERSION,
-    g: input.gender,
-    s: compactScores(input.scores),
-    n: input.otherName,
+  const v = VERSION
+  const g = input.gender === "male" ? "1" : "0"
+
+  let scoresStr = ""
+  for (const axis of ENCODE_AXES) {
+    const raw = input.scores[axis] ?? 0
+    const score = Math.max(0, Math.min(99, Math.round(raw)))
+    scoresStr += score.toString().padStart(2, "0")
   }
-  const json = JSON.stringify(compact)
-  let b64: string
-  if (typeof window !== "undefined") {
-    b64 = btoa(unescape(encodeURIComponent(json)))
-  } else {
-    b64 = Buffer.from(json, "utf-8").toString("base64")
-  }
-  // URL-safe base64
-  const safe = b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
-  return `${PREFIX}-${safe}`
+
+  const payload = v + g + scoresStr // 1 + 1 + 72 = 74桁
+  const checksum = computeChecksum(payload) // 2桁
+  const raw = payload + checksum // 76桁
+
+  // 4桁ごとに「-」で区切る
+  return raw.match(/.{1,4}/g)?.join("-") ?? raw
 }
 
 export function decodeShareCode(code: string): SharedData | null {
   try {
-    // 全角文字・空白を正規化
-    const normalized = code
+    // 全角・空白・記号を除去して数字だけにする
+    const digits = code
       .trim()
-      .replace(/[－‐-―]/g, "-") // 全角ハイフン類
-      .replace(/[　\s]+/g, "") // 全角空白・改行など
-    const cleaned = normalized.replace(new RegExp(`^${PREFIX}-?`, "i"), "")
-    if (!cleaned) return null
-    // Restore base64 padding & chars
-    let b64 = cleaned.replace(/-/g, "+").replace(/_/g, "/")
-    while (b64.length % 4) b64 += "="
+      .replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
+      .replace(/\D/g, "")
 
-    let json: string
-    if (typeof window !== "undefined") {
-      json = decodeURIComponent(escape(atob(b64)))
-    } else {
-      json = Buffer.from(b64, "base64").toString("utf-8")
+    if (digits.length < 74) return null
+
+    // 末尾2桁がチェックサム
+    const payload = digits.slice(0, digits.length - 2)
+    const checksum = digits.slice(-2)
+    if (computeChecksum(payload) !== checksum) return null
+
+    const v = parseInt(payload.slice(0, 1), 10)
+    const gFlag = payload.slice(1, 2)
+    const scoresStr = payload.slice(2)
+
+    const scores: Record<string, number> = {}
+    for (let i = 0; i < ENCODE_AXES.length; i++) {
+      const slice = scoresStr.slice(i * 2, i * 2 + 2)
+      if (slice.length !== 2) break
+      const score = parseInt(slice, 10)
+      if (score > 0) {
+        scores[ENCODE_AXES[i]] = score
+      }
     }
-    const data = JSON.parse(json)
-    if (!data || typeof data !== "object") return null
-    const scores: AnalysisScores = data.s ?? {}
 
     return {
-      version: data.v ?? 1,
-      gender: data.g,
-      otherName: data.n,
+      version: v,
+      gender: gFlag === "1" ? "male" : "female",
       scores,
       hasAttraction: hasPrefix(scores, "attract"),
       hasSelf: hasPrefix(scores, "self"),
@@ -121,7 +140,7 @@ export function getMyCode(): { code: string; data: SharedData } | null {
 
   const code = encodeShareCode({ scores, gender })
   const data: SharedData = {
-    version: VERSION,
+    version: parseInt(VERSION, 10),
     gender,
     scores,
     hasAttraction: hasPrefix(scores, "attract"),
