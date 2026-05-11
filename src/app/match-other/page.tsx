@@ -25,7 +25,7 @@ export default function MatchOtherPage() {
       return
     }
     if (!attractionStored) {
-      setError("先にあなた自身の沼り診断を受けてください")
+      setError("先にあなた自身の恋愛MBTI診断を受けてください")
       setIsLoading(false)
       return
     }

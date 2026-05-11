@@ -69,7 +69,7 @@ export default function MyPage() {
     const data: StampStatus[] = [
       {
         id: "attraction",
-        title: "沼り診断",
+        title: "恋愛MBTI診断",
         subtitle: "あなたが惹かれるタイプ",
         icon: "♡",
         path: "/result",
@@ -187,7 +187,7 @@ export default function MyPage() {
 
               {!stamps.find((s) => s.id === "attraction")?.completed && (
                 <Link href="/diagnosis" className="btn-primary w-full max-w-xs text-center">
-                  まず沼り診断から
+                  まず恋愛MBTI診断から
                 </Link>
               )}
 

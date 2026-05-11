@@ -11,7 +11,7 @@ export default function TopPage() {
           className="animate-fade-in mb-12"
           style={{ animationDelay: "0.3s" }}
         >
-          <span className="heading-eyebrow">恋愛人格診断</span>
+          <span className="heading-eyebrow">恋愛MBTI診断</span>
         </div>
 
         {/* Hero title */}
@@ -19,9 +19,11 @@ export default function TopPage() {
           className="title-editorial animate-blur-in mb-12 text-[42px] sm:text-[48px]"
           style={{ animationDelay: "0.6s" }}
         >
-          好きになる人、
+          あなたが
           <br />
-          <em>毎回似てない？</em>
+          惹かれる
+          <br />
+          <em>16タイプ</em>
         </h1>
 
         {/* Sub-copy */}

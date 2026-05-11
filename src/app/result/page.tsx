@@ -72,14 +72,14 @@ export default function ResultPage() {
 
   const handleShareTwitter = useCallback(() => {
     if (!result) return
-    const text = `私の沼るタイプ「${result.displayName}」だった。希少度${result.rarityPercent}%。当たりすぎてて笑った`
+    const text = `私が惹かれるタイプ「${result.displayName}」だった。希少度${result.rarityPercent}%。当たりすぎてて笑った`
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`
     window.open(url, "_blank")
   }, [result, siteUrl])
 
   const handleShareLINE = useCallback(() => {
     if (!result) return
-    const text = `沼り診断やったら「${result.displayName}」だった。希少度${result.rarityPercent}%、怖いくらい当たってる\n${siteUrl}`
+    const text = `恋愛MBTI診断やったら「${result.displayName}」だった。希少度${result.rarityPercent}%、怖いくらい当たってる\n${siteUrl}`
     const url = `https://line.me/R/share?text=${encodeURIComponent(text)}`
     window.open(url, "_blank")
   }, [result, siteUrl])
@@ -219,7 +219,7 @@ export default function ResultPage() {
         <section className="mb-20">
           <ScrollReveal>
             <p className="mb-6">
-              <span className="heading-eyebrow">沼るポイント</span>
+              <span className="heading-eyebrow">惹かれるポイント</span>
             </p>
             <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
               たぶんこういう人、<span className="highlight-pink">好きでしょ？</span>
@@ -249,7 +249,7 @@ export default function ResultPage() {
               <span className="heading-eyebrow">MBTIランキング</span>
             </p>
             <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
-              あなたが沼りやすいMBTI
+              あなたが惹かれやすいMBTI
             </p>
           </ScrollReveal>
 

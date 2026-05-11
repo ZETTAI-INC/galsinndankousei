@@ -340,14 +340,14 @@ function MatchWithContent() {
                 精度を上げる
               </p>
               <p className="serif mb-4 text-[12px] font-light leading-[2] tracking-wide text-white/60">
-                {!myData.hasAttraction && "沼り診断を完了すると、相手があなたを好きになる確率が見える。"}
+                {!myData.hasAttraction && "恋愛MBTI診断を完了すると、相手があなたを好きになる確率が見える。"}
                 {!myData.hasSelf && "自己診断を完了すると、あなたが相手を好きになる確率が見える。"}
                 {myData.hasAttraction && myData.hasSelf && "相手にも両方の診断を受けてもらうと、最高精度になる。"}
               </p>
               <div className="flex gap-3">
                 {!myData.hasAttraction && (
                   <Link href="/diagnosis" className="btn-secondary">
-                    沼り診断
+                    恋愛MBTI診断
                   </Link>
                 )}
                 {!myData.hasSelf && (

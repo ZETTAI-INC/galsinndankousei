@@ -91,7 +91,7 @@ export default function MyCodePage() {
                 className="border border-[var(--accent)]/30 px-3 py-1 text-[10px] tracking-[0.15em] text-[var(--accent)]"
                 style={{ background: "rgba(212, 165, 184, 0.05)" }}
               >
-                ♡ 沼り診断
+                ♡ 恋愛MBTI診断
               </span>
             )}
             {data.hasSelf && (

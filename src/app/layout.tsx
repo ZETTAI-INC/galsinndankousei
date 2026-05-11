@@ -27,18 +27,18 @@ const rockRoll = RocknRoll_One({
 })
 
 export const metadata: Metadata = {
-  title: "沼り診断",
+  title: "あなたが惹かれる16タイプ｜恋愛MBTI診断",
   description:
-    "好きになる人、毎回似てない？それ、偶然じゃないから。あなたが沼る16タイプを見せてあげる。",
+    "24の質問で、あなたが無意識に選んでしまう人を紐解く。恋愛MBTI診断。",
   openGraph: {
-    title: "沼り診断",
-    description: "好きになる人、毎回似てない？それ、偶然じゃないから。",
+    title: "あなたが惹かれる16タイプ｜恋愛MBTI診断",
+    description: "24の質問で、あなたが無意識に選んでしまう人を紐解く。",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "沼り診断",
-    description: "好きになる人、毎回似てない？それ、偶然じゃないから。",
+    title: "あなたが惹かれる16タイプ｜恋愛MBTI診断",
+    description: "24の質問で、あなたが無意識に選んでしまう人を紐解く。",
   },
 }
 
