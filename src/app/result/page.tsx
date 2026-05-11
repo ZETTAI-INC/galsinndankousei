@@ -122,21 +122,37 @@ export default function ResultPage() {
       <div className="mx-auto max-w-lg">
         {/* Hero - Decisive moment */}
         <div className="mb-24 text-center">
-          {/* Eyebrow */}
+          {/* Eyebrow - 明確化 */}
           <div
-            className="animate-fade-in mb-10"
+            className="animate-fade-in mb-6"
             style={{ animationDelay: "0.2s" }}
           >
-            <span className="heading-eyebrow">あなたのタイプ</span>
+            <span className="heading-eyebrow">あなたが惹かれる人</span>
           </div>
+
+          {/* 強調：これは「自分の」ではなく「惹かれる相手の」タイプ */}
+          <p
+            className="animate-fade-in mb-2 text-[12px] tracking-[0.15em] text-white/55"
+            style={{ animationDelay: "0.35s" }}
+          >
+            あなたが好きになりやすいのは
+          </p>
 
           {/* Display name - large serif */}
           <h1
-            className="title-editorial animate-blur-in mb-10 text-[36px] sm:text-[42px]"
+            className="title-editorial animate-blur-in mb-4 text-[34px] sm:text-[40px]"
             style={{ animationDelay: "0.5s" }}
           >
             {result.displayName}
           </h1>
+
+          {/* MBTI - 直下に明示 */}
+          <p
+            className="serif animate-fade-in mb-10 text-[18px] tracking-[0.25em] text-[var(--accent)]"
+            style={{ animationDelay: "0.7s" }}
+          >
+            {result.displayType} 系の人
+          </p>
 
           {/* Divider */}
           <div
@@ -154,37 +170,33 @@ export default function ResultPage() {
 
           {/* Rarity - large editorial number */}
           <div
-            className="animate-scale-in mb-16 flex flex-col items-center"
+            className="animate-scale-in mb-4 flex flex-col items-center"
             style={{ animationDelay: "1.6s" }}
           >
-            <p className="mb-4 text-[10px] tracking-[0.4em] text-white/40">
-              RARITY
+            <p className="mb-4 text-[10px] tracking-[0.3em] text-white/40">
+              この好みの希少度
             </p>
             <div className="flex items-baseline gap-2">
               <span className="number-large">{result.rarityPercent}</span>
               <span className="text-[14px] tracking-[0.1em] text-white/50">%</span>
             </div>
           </div>
+          <p
+            className="animate-fade-in mb-16 text-[10px] tracking-wide text-white/30"
+            style={{ animationDelay: "1.7s" }}
+          >
+            ※ あなた自身のタイプではなく、あなたが惹かれる相手のタイプ
+          </p>
 
           {/* Radar chart */}
           <div
-            className="animate-fade-in mb-12"
+            className="animate-fade-in"
             style={{ animationDelay: "2.0s" }}
           >
+            <p className="mb-2 text-[10px] tracking-[0.3em] text-white/45">
+              惹かれる人の傾向
+            </p>
             <RadarChart data={result.axisChart} size={280} />
-          </div>
-
-          {/* MBTI base */}
-          <div
-            className="animate-fade-in"
-            style={{ animationDelay: "2.4s" }}
-          >
-            <p className="mb-2 text-[10px] tracking-[0.5em] text-white/30">
-              BASE TYPE
-            </p>
-            <p className="serif text-[20px] tracking-[0.25em] text-[var(--accent)]">
-              {result.displayType}
-            </p>
           </div>
         </div>
 
@@ -203,8 +215,11 @@ export default function ResultPage() {
         {/* MBTI Analysis */}
         <section className="mb-20">
           <ScrollReveal>
-            <p className="mb-12">
-              <span className="heading-eyebrow">タイプ別分析</span>
+            <p className="mb-3">
+              <span className="heading-eyebrow">惹かれる人のタイプ別分析</span>
+            </p>
+            <p className="serif mb-10 text-[12px] font-light italic tracking-wide text-white/55">
+              あなたが好きになりやすい4つのMBTI傾向
             </p>
           </ScrollReveal>
 
@@ -214,11 +229,12 @@ export default function ResultPage() {
               className="accent-border-left mb-10 pl-5"
               delay={i * 150}
             >
-              <div className="mb-1 flex items-baseline gap-3">
-                <span className="text-[11px] tracking-[0.3em] text-pink-300/55">
+              <div className="mb-1 flex items-baseline gap-2">
+                <span className="text-[10px] tracking-[0.2em] text-white/45">あなたが好きになる</span>
+                <span className="text-[12px] tracking-[0.3em] text-pink-300/70">
                   {item.type}
                 </span>
-                <span className="text-[10px] text-purple-300/35">系の</span>
+                <span className="text-[10px] text-purple-300/40">系の</span>
               </div>
               <p className="serif-accent mb-4 text-[16px] font-light tracking-wide text-pink-100/85">
                 &ldquo;{item.trait}&rdquo;
@@ -234,7 +250,7 @@ export default function ResultPage() {
         <section className="mb-20">
           <ScrollReveal>
             <p className="mb-6">
-              <span className="heading-eyebrow">惹かれるポイント</span>
+              <span className="heading-eyebrow">あなたが惹かれる人の特徴</span>
             </p>
             <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
               たぶんこういう人、<span className="highlight-pink">好きでしょ？</span>
@@ -261,10 +277,10 @@ export default function ResultPage() {
         <section className="mb-20">
           <ScrollReveal>
             <p className="mb-6">
-              <span className="heading-eyebrow">MBTIランキング</span>
+              <span className="heading-eyebrow">惹かれるMBTIランキング</span>
             </p>
             <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
-              あなたが惹かれやすいMBTI
+              あなたが好きになりやすいMBTI（自分のMBTIじゃないよ）
             </p>
           </ScrollReveal>
 

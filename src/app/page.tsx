@@ -28,12 +28,22 @@ export default function TopPage() {
 
         {/* Sub-copy */}
         <p
-          className="serif animate-fade-in-up mb-16 text-[14px] font-light leading-[2.4] tracking-wide text-white/70"
+          className="serif animate-fade-in-up mb-6 text-[14px] font-light leading-[2.4] tracking-wide text-white/70"
           style={{ animationDelay: "1.4s" }}
         >
           24の質問で、あなたが
           <br />
           無意識に選んでしまう人を紐解く。
+        </p>
+
+        {/* 重要な前提を明示 */}
+        <p
+          className="animate-fade-in mb-12 text-[11px] tracking-[0.1em] text-[var(--accent)]/70"
+          style={{ animationDelay: "1.6s" }}
+        >
+          ※ あなたが惹かれる相手のMBTIを当てる診断です
+          <br />
+          （自分自身のMBTIを当てるものではありません）
         </p>
 
         <div
