@@ -4,65 +4,65 @@ import Link from "next/link"
 
 export default function TopPage() {
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center px-6">
-      <div className="max-w-md text-center">
-        <p
-          className="animate-fade-in-up mb-6 text-[10px] tracking-[0.4em] text-fuchsia-400/50 uppercase"
+    <div className="flex min-h-dvh flex-col items-center justify-center px-8 py-20">
+      <div className="w-full max-w-md text-center">
+        {/* Eyebrow */}
+        <div
+          className="animate-fade-in mb-12"
           style={{ animationDelay: "0.3s" }}
         >
-          Divine Gyaru Diagnosis
-        </p>
+          <span className="heading-eyebrow">恋愛人格診断</span>
+        </div>
 
+        {/* Hero title */}
         <h1
-          className="text-glow-pink animate-fade-in-up mb-4 text-[28px] font-bold leading-[1.5] tracking-wide"
-          style={{
-            animationDelay: "0.6s",
-            background: "linear-gradient(135deg, #ff0066, #e040fb, #bf5af2)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
+          className="title-editorial animate-blur-in mb-12 text-[42px] sm:text-[48px]"
+          style={{ animationDelay: "0.6s" }}
         >
           好きになる人、
           <br />
-          毎回似てない？
+          <em>毎回似てない？</em>
         </h1>
 
+        {/* Sub-copy */}
         <p
-          className="animate-fade-in mb-5 text-[15px] font-light leading-[2] tracking-wide text-fuchsia-200/70"
-          style={{ animationDelay: "1.0s" }}
-        >
-          てかさ、それ偶然じゃないから。
-        </p>
-
-        <p
-          className="animate-fade-in mb-10 text-[12px] font-light leading-[1.9] tracking-wide text-purple-300/35"
+          className="serif animate-fade-in-up mb-16 text-[14px] font-light leading-[2.4] tracking-wide text-white/70"
           style={{ animationDelay: "1.4s" }}
         >
-          回答に応じて質問が変化。
+          24の質問で、あなたが
           <br />
-          あなたが無意識に沼る16タイプを
-          <br />
-          ギャル神が見抜きます。
+          無意識に選んでしまう人を紐解く。
         </p>
 
         <div
-          className="animate-fade-in mb-6"
-          style={{ animationDelay: "1.8s" }}
+          className="animate-fade-in-up mb-12"
+          style={{ animationDelay: "1.9s" }}
         >
-          <Link
-            href="/diagnosis"
-            className="border-glow inline-block border px-10 py-4 text-[13px] font-medium tracking-[0.25em] text-fuchsia-200/80 transition-all duration-500 hover:text-white"
-          >
-            診てもらう
+          <Link href="/diagnosis" className="btn-primary">
+            診断をはじめる
           </Link>
         </div>
 
-        <p
-          className="animate-fade-in text-[11px] tracking-wider text-purple-400/25"
-          style={{ animationDelay: "2.2s" }}
+        <div
+          className="animate-fade-in mb-10 flex items-center justify-center gap-3 text-[10px] tracking-[0.3em] text-white/30"
+          style={{ animationDelay: "2.4s" }}
         >
-          24問 / 約3分
-        </p>
+          <span>24 QUESTIONS</span>
+          <span>·</span>
+          <span>3 MIN</span>
+        </div>
+
+        <div
+          className="animate-fade-in"
+          style={{ animationDelay: "2.7s" }}
+        >
+          <Link
+            href="/mypage"
+            className="text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+          >
+            診断シートを見る →
+          </Link>
+        </div>
       </div>
     </div>
   )

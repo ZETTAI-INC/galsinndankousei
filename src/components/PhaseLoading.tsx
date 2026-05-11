@@ -4,14 +4,14 @@ import { useEffect, useState } from "react"
 
 const PHASE_MESSAGES: Record<number, readonly string[]> = {
   1: [
-    "ふーん、なるほどね",
-    "あんた用の質問選んでるから待って",
-    "ここからちょっと踏み込むよ",
+    "ふんふん、なるほど",
+    "あなた向けの質問選んでるね",
+    "もうちょっと聞かせて",
   ],
   2: [
-    "あー、見えてきたわ",
-    "てかあんた結構わかりやすいね",
-    "最後の確認させて",
+    "あー、見えてきた",
+    "結構わかりやすいタイプかも",
+    "最後の確認ね",
   ],
 }
 
@@ -45,13 +45,13 @@ export function PhaseLoading({ phase, onComplete }: PhaseLoadingProps) {
     <div className="flex min-h-dvh flex-col items-center justify-center px-6">
       <div className="animate-fade-in flex flex-col items-center">
         <div className="mb-12 flex gap-2">
-          <span className="loading-dot h-1 w-1 rounded-full bg-white/30" />
-          <span className="loading-dot h-1 w-1 rounded-full bg-white/30" />
-          <span className="loading-dot h-1 w-1 rounded-full bg-white/30" />
+          <span className="loading-dot h-1.5 w-1.5 rounded-full" />
+          <span className="loading-dot h-1.5 w-1.5 rounded-full" />
+          <span className="loading-dot h-1.5 w-1.5 rounded-full" />
         </div>
         <p
           key={messageIndex}
-          className="animate-fade-in text-center text-[13px] tracking-wider text-purple-200/50"
+          className="serif animate-fade-in text-center text-[16px] font-light italic tracking-wide text-white/80"
         >
           {messages[messageIndex]}
         </p>

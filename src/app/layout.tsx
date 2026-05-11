@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next"
-import { Noto_Sans_JP } from "next/font/google"
+import { Noto_Sans_JP, Noto_Serif_JP, Yusei_Magic, RocknRoll_One } from "next/font/google"
 import "./globals.css"
 
 const notoSansJP = Noto_Sans_JP({
@@ -8,19 +8,37 @@ const notoSansJP = Noto_Sans_JP({
   weight: ["300", "400", "500", "700"],
 })
 
+const yuseiMagic = Yusei_Magic({
+  variable: "--font-yusei-magic",
+  subsets: ["latin"],
+  weight: ["400"],
+})
+
+const notoSerifJP = Noto_Serif_JP({
+  variable: "--font-noto-serif-jp",
+  subsets: ["latin"],
+  weight: ["300", "500", "700", "900"],
+})
+
+const rockRoll = RocknRoll_One({
+  variable: "--font-rocknroll",
+  subsets: ["latin"],
+  weight: ["400"],
+})
+
 export const metadata: Metadata = {
-  title: "ギャル神の沼り診断",
+  title: "沼り診断",
   description:
-    "好きになる人、毎回似てない？ギャル神があなたが沼る16タイプを見抜きます。",
+    "好きになる人、毎回似てない？それ、偶然じゃないから。あなたが沼る16タイプを見せてあげる。",
   openGraph: {
-    title: "ギャル神の沼り診断",
-    description: "てかさ、それ偶然じゃないから。あなたが沼る人格、全部見えてる。",
+    title: "沼り診断",
+    description: "好きになる人、毎回似てない？それ、偶然じゃないから。",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ギャル神の沼り診断",
-    description: "てかさ、それ偶然じゃないから。あなたが沼る人格、全部見えてる。",
+    title: "沼り診断",
+    description: "好きになる人、毎回似てない？それ、偶然じゃないから。",
   },
 }
 
@@ -36,7 +54,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ja" className={`${notoSansJP.variable} h-full antialiased`}>
+    <html
+      lang="ja"
+      className={`${notoSansJP.variable} ${notoSerifJP.variable} ${yuseiMagic.variable} ${rockRoll.variable} h-full antialiased`}
+    >
       <body
         className="min-h-full flex flex-col"
         style={{ fontFamily: "var(--font-noto-sans-jp), sans-serif" }}

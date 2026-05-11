@@ -14,9 +14,9 @@ export const ShareImage = forwardRef<HTMLDivElement, ShareImageProps>(
         ref={ref}
         className="share-image-container"
         style={{
-          background: "#050505",
-          color: "#e8e8e8",
-          padding: "48px 32px",
+          background: "#0a0710",
+          color: "#f5f0f7",
+          padding: "56px 36px",
           width: "600px",
           fontFamily: "'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif",
         }}
@@ -25,26 +25,64 @@ export const ShareImage = forwardRef<HTMLDivElement, ShareImageProps>(
         <div
           style={{
             fontSize: "10px",
-            letterSpacing: "0.3em",
-            color: "rgba(255,255,255,0.25)",
+            letterSpacing: "0.4em",
+            color: "rgba(236, 72, 153, 0.5)",
             marginBottom: "32px",
-            textTransform: "uppercase",
+            textAlign: "center",
           }}
         >
-          Persona Attraction Diagnosis
+          沼り診断
         </div>
 
-        {/* Core Analysis */}
-        <div style={{ marginBottom: "32px" }}>
+        {/* Display name (hero) */}
+        <div
+          style={{
+            fontSize: "26px",
+            fontWeight: 500,
+            lineHeight: "1.5",
+            background: "linear-gradient(135deg, #ec4899 0%, #c084fc 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            textAlign: "center",
+            marginBottom: "20px",
+          }}
+        >
+          {result.displayName}
+        </div>
+
+        {/* Tagline */}
+        <div
+          style={{
+            fontStyle: "italic",
+            fontFamily: "'Times New Roman', serif",
+            fontSize: "13px",
+            lineHeight: "1.9",
+            color: "rgba(245, 240, 247, 0.7)",
+            textAlign: "center",
+            marginBottom: "28px",
+          }}
+        >
+          「{result.tagline}」
+        </div>
+
+        {/* Rarity */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "36px",
+          }}
+        >
           <div
             style={{
-              fontSize: "13px",
-              lineHeight: "2.2",
-              color: "rgba(255,255,255,0.75)",
-              whiteSpace: "pre-line",
+              border: "1px solid rgba(236, 72, 153, 0.25)",
+              padding: "8px 18px",
+              fontSize: "11px",
+              color: "rgba(245, 240, 247, 0.7)",
+              letterSpacing: "0.15em",
             }}
           >
-            {result.coreAnalysis[0]}
+            希少度 {result.rarityPercent}%
           </div>
         </div>
 
@@ -53,19 +91,19 @@ export const ShareImage = forwardRef<HTMLDivElement, ShareImageProps>(
           style={{
             height: "1px",
             background:
-              "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
-            marginBottom: "32px",
+              "linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.3), transparent)",
+            marginBottom: "28px",
           }}
         />
 
-        {/* Top MBTI */}
-        <div style={{ marginBottom: "24px" }}>
+        {/* Top MBTI ranking */}
+        <div style={{ marginBottom: "28px" }}>
           <div
             style={{
               fontSize: "10px",
-              color: "rgba(255,255,255,0.3)",
+              color: "rgba(236, 72, 153, 0.5)",
               marginBottom: "16px",
-              letterSpacing: "0.15em",
+              letterSpacing: "0.25em",
             }}
           >
             沼りやすいMBTI
@@ -76,54 +114,37 @@ export const ShareImage = forwardRef<HTMLDivElement, ShareImageProps>(
               style={{
                 display: "flex",
                 alignItems: "baseline",
-                gap: "12px",
-                marginBottom: "8px",
+                gap: "14px",
+                marginBottom: "10px",
               }}
             >
               <span
                 style={{
                   fontSize: "11px",
-                  color: "rgba(255,255,255,0.2)",
-                  minWidth: "16px",
+                  color: "rgba(236, 72, 153, 0.4)",
+                  minWidth: "20px",
+                  fontFamily: "'Times New Roman', serif",
                 }}
               >
-                {i + 1}.
+                {String(i + 1).padStart(2, "0")}
               </span>
               <span
                 style={{
-                  fontSize: "14px",
-                  color: "rgba(255,255,255,0.7)",
-                  letterSpacing: "0.1em",
+                  fontSize: "15px",
+                  color: "rgba(245, 240, 247, 0.85)",
+                  letterSpacing: "0.15em",
                 }}
               >
                 {mbti.type}
               </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Micro Traits (top 6) */}
-        <div
-          style={{
-            height: "1px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
-            marginBottom: "24px",
-          }}
-        />
-        <div>
-          {result.microTraits.slice(0, 6).map((trait) => (
-            <div
-              key={trait}
-              style={{
-                fontSize: "12px",
-                color: "rgba(255,255,255,0.4)",
-                marginBottom: "6px",
-                paddingLeft: "12px",
-                borderLeft: "1px solid rgba(255,255,255,0.08)",
-              }}
-            >
-              {trait}
+              <span
+                style={{
+                  fontSize: "11px",
+                  color: "rgba(245, 240, 247, 0.4)",
+                }}
+              >
+                {mbti.label}
+              </span>
             </div>
           ))}
         </div>
@@ -132,12 +153,15 @@ export const ShareImage = forwardRef<HTMLDivElement, ShareImageProps>(
         <div
           style={{
             marginTop: "32px",
-            fontSize: "9px",
-            color: "rgba(255,255,255,0.15)",
+            paddingTop: "20px",
+            borderTop: "1px solid rgba(245, 240, 247, 0.06)",
+            fontSize: "10px",
+            color: "rgba(245, 240, 247, 0.3)",
             letterSpacing: "0.2em",
+            textAlign: "center",
           }}
         >
-          あなたが沼る人格診断
+          沼り診断
         </div>
       </div>
     )

@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react"
 
 const LOADING_MESSAGES = [
-  "ちょっと待ってね、見えてきた",
-  "あんたの恋愛パターン、えぐいな",
-  "マジでこのタイプ好きなんだ...",
-  "いや関係ないけどさ、結構面白いよあんた",
-  "はい出た。言うよ？覚悟して",
+  "ちょっと待ってね",
+  "だんだん見えてきた",
+  "あー、なるほどね",
+  "結構わかりやすいかも",
+  "もう少しで出るよ",
 ]
 
 export function LoadingAnalysis() {
@@ -26,13 +26,13 @@ export function LoadingAnalysis() {
     <div className="flex min-h-dvh flex-col items-center justify-center px-6">
       <div className="animate-fade-in flex flex-col items-center">
         <div className="mb-12 flex gap-2">
-          <span className="loading-dot h-1 w-1 rounded-full bg-white/30" />
-          <span className="loading-dot h-1 w-1 rounded-full bg-white/30" />
-          <span className="loading-dot h-1 w-1 rounded-full bg-white/30" />
+          <span className="loading-dot h-1.5 w-1.5 rounded-full" />
+          <span className="loading-dot h-1.5 w-1.5 rounded-full" />
+          <span className="loading-dot h-1.5 w-1.5 rounded-full" />
         </div>
         <p
           key={messageIndex}
-          className="animate-fade-in text-center text-[13px] tracking-wider text-purple-200/50"
+          className="serif animate-fade-in text-center text-[16px] font-light italic tracking-wide text-white/80"
         >
           {LOADING_MESSAGES[messageIndex]}
         </p>

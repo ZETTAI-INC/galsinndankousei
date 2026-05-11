@@ -7,6 +7,7 @@ import type { AnalysisResult, AnalysisScores } from "@/lib/types"
 import { LoadingAnalysis } from "@/components/LoadingAnalysis"
 import { ShareImage } from "@/components/ShareImage"
 import { ScrollReveal } from "@/components/ScrollReveal"
+import { RadarChart } from "@/components/RadarChart"
 
 export default function ResultPage() {
   const [result, setResult] = useState<AnalysisResult | null>(null)
@@ -39,6 +40,13 @@ export default function ResultPage() {
       .then((data: AnalysisResult) => {
         setResult(data)
         setIsLoading(false)
+        // 相性診断用にdisplayTypeをキャッシュ
+        if (typeof window !== "undefined") {
+          localStorage.setItem("attraction-result-cache", JSON.stringify({
+            displayType: data.displayType,
+            displayName: data.displayName,
+          }))
+        }
       })
       .catch((err: Error) => {
         setError(err.message)
@@ -64,16 +72,14 @@ export default function ResultPage() {
 
   const handleShareTwitter = useCallback(() => {
     if (!result) return
-    const topType = result.mbtiRanking[0]?.type ?? ""
-    const text = `私が沼るタイプは${topType}らしい。ギャル神に見抜かれた。`
+    const text = `私の沼るタイプ「${result.displayName}」だった。希少度${result.rarityPercent}%。当たりすぎてて笑った`
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`
     window.open(url, "_blank")
   }, [result, siteUrl])
 
   const handleShareLINE = useCallback(() => {
     if (!result) return
-    const topType = result.mbtiRanking[0]?.type ?? ""
-    const text = `私が沼るタイプは${topType}だって。マジで当たってて怖い。やってみて\n${siteUrl}`
+    const text = `沼り診断やったら「${result.displayName}」だった。希少度${result.rarityPercent}%、怖いくらい当たってる\n${siteUrl}`
     const url = `https://line.me/R/share?text=${encodeURIComponent(text)}`
     window.open(url, "_blank")
   }, [result, siteUrl])
@@ -99,25 +105,80 @@ export default function ResultPage() {
   return (
     <div className="min-h-dvh px-6 py-16">
       <div className="mx-auto max-w-lg">
-        {/* Header */}
-        <div className="animate-fade-in-up mb-16 text-center">
-          <p className="mb-2 text-[10px] tracking-[0.3em] text-pink-300/30 uppercase">
-            Divine Gyaru Result
-          </p>
-          <h1 className="text-glow-pink mb-3 text-[18px] font-medium tracking-wider text-pink-100">
-            はい、出たよ
+        {/* Hero - Decisive moment */}
+        <div className="mb-24 text-center">
+          {/* Eyebrow */}
+          <div
+            className="animate-fade-in mb-10"
+            style={{ animationDelay: "0.2s" }}
+          >
+            <span className="heading-eyebrow">あなたのタイプ</span>
+          </div>
+
+          {/* Display name - large serif */}
+          <h1
+            className="title-editorial animate-blur-in mb-10 text-[36px] sm:text-[42px]"
+            style={{ animationDelay: "0.5s" }}
+          >
+            {result.displayName}
           </h1>
-          <p className="text-[12px] text-purple-200/40">
-            あんたが沼る人格、全部見えた
+
+          {/* Divider */}
+          <div
+            className="animate-fade-in mx-auto mb-10 h-px w-16 bg-[var(--accent)] opacity-50"
+            style={{ animationDelay: "1.0s" }}
+          />
+
+          {/* Tagline */}
+          <p
+            className="serif animate-fade-in mx-auto mb-16 max-w-sm text-[16px] font-light leading-[2.1] tracking-wide text-white/85"
+            style={{ animationDelay: "1.2s" }}
+          >
+            「{result.tagline}」
           </p>
+
+          {/* Rarity - large editorial number */}
+          <div
+            className="animate-scale-in mb-16 flex flex-col items-center"
+            style={{ animationDelay: "1.6s" }}
+          >
+            <p className="mb-4 text-[10px] tracking-[0.4em] text-white/40">
+              RARITY
+            </p>
+            <div className="flex items-baseline gap-2">
+              <span className="number-large">{result.rarityPercent}</span>
+              <span className="text-[14px] tracking-[0.1em] text-white/50">%</span>
+            </div>
+          </div>
+
+          {/* Radar chart */}
+          <div
+            className="animate-fade-in mb-12"
+            style={{ animationDelay: "2.0s" }}
+          >
+            <RadarChart data={result.axisChart} size={280} />
+          </div>
+
+          {/* MBTI base */}
+          <div
+            className="animate-fade-in"
+            style={{ animationDelay: "2.4s" }}
+          >
+            <p className="mb-2 text-[10px] tracking-[0.5em] text-white/30">
+              BASE TYPE
+            </p>
+            <p className="serif text-[20px] tracking-[0.25em] text-[var(--accent)]">
+              {result.displayType}
+            </p>
+          </div>
         </div>
 
         {/* Core Analysis */}
         <section className="mb-20">
           {result.coreAnalysis.map((analysis, i) => (
             <ScrollReveal key={i} className="mb-12" delay={i * 200}>
-              <div className="divider-glow mb-4" />
-              <p className="text-[14px] font-light leading-[2.4] tracking-wide text-purple-100/75">
+              <div className="divider-soft mb-6" />
+              <p className="text-[14px] font-light leading-[2.4] tracking-[0.04em] text-white/85">
                 {analysis}
               </p>
             </ScrollReveal>
@@ -127,8 +188,8 @@ export default function ResultPage() {
         {/* MBTI Analysis */}
         <section className="mb-20">
           <ScrollReveal>
-            <p className="mb-10 text-[10px] tracking-[0.2em] text-pink-300/25 uppercase">
-              Type Breakdown
+            <p className="mb-12">
+              <span className="heading-eyebrow">タイプ別分析</span>
             </p>
           </ScrollReveal>
 
@@ -139,14 +200,15 @@ export default function ResultPage() {
               delay={i * 150}
             >
               <div className="mb-1 flex items-baseline gap-3">
-                <span className="text-[13px] tracking-wider text-pink-300/50">
-                  {item.type}系の
+                <span className="text-[11px] tracking-[0.3em] text-pink-300/55">
+                  {item.type}
                 </span>
+                <span className="text-[10px] text-purple-300/35">系の</span>
               </div>
-              <p className="text-glow-purple mb-3 text-[15px] font-light tracking-wider text-purple-200/80">
+              <p className="serif-accent mb-4 text-[16px] font-light tracking-wide text-pink-100/85">
                 &ldquo;{item.trait}&rdquo;
               </p>
-              <p className="text-[13px] font-light leading-[2] tracking-wide text-purple-100/45">
+              <p className="text-[13px] font-light leading-[2.1] tracking-[0.03em] text-white/55">
                 {item.description}
               </p>
             </ScrollReveal>
@@ -156,11 +218,11 @@ export default function ResultPage() {
         {/* Micro Traits */}
         <section className="mb-20">
           <ScrollReveal>
-            <p className="mb-4 text-[10px] tracking-[0.2em] text-pink-300/25 uppercase">
-              Micro Attractions
+            <p className="mb-6">
+              <span className="heading-eyebrow">沼るポイント</span>
             </p>
-            <p className="mb-6 text-[13px] tracking-wider text-purple-200/50">
-              あんたが惹かれやすい人の特徴：
+            <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
+              たぶんこういう人、<span className="highlight-pink">好きでしょ？</span>
             </p>
           </ScrollReveal>
 
@@ -171,8 +233,8 @@ export default function ResultPage() {
                 className="flex items-start gap-3 py-1"
                 delay={i * 40}
               >
-                <span className="mt-[6px] h-[3px] w-[3px] shrink-0 rounded-full bg-pink-400/30" />
-                <span className="text-[13px] font-light leading-[1.8] tracking-wide text-purple-100/50">
+                <span className="mt-[10px] h-[1px] w-3 shrink-0 bg-pink-400/40" />
+                <span className="text-[13px] font-light leading-[1.9] tracking-[0.03em] text-white/65">
                   {trait}
                 </span>
               </ScrollReveal>
@@ -183,29 +245,29 @@ export default function ResultPage() {
         {/* MBTI Ranking */}
         <section className="mb-20">
           <ScrollReveal>
-            <p className="mb-4 text-[10px] tracking-[0.2em] text-pink-300/25 uppercase">
-              MBTI Ranking
+            <p className="mb-6">
+              <span className="heading-eyebrow">MBTIランキング</span>
             </p>
-            <p className="mb-6 text-[13px] tracking-wider text-purple-200/50">
-              あんたが沼りやすいMBTI：
+            <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
+              あなたが沼りやすいMBTI
             </p>
           </ScrollReveal>
 
           {result.mbtiRanking.map((mbti, i) => (
             <ScrollReveal key={mbti.type} className="mb-6 flex items-start gap-4" delay={i * 100}>
-              <span className="mt-1 text-[20px] font-light text-pink-400/15">
-                {i + 1}
+              <span className="serif-accent mt-1 text-[24px] font-light text-pink-400/30">
+                {String(i + 1).padStart(2, "0")}
               </span>
               <div>
-                <div className="mb-1 flex items-baseline gap-2">
-                  <span className="text-[16px] tracking-wider text-pink-200/70">
+                <div className="mb-2 flex items-baseline gap-3">
+                  <span className="text-[15px] tracking-[0.15em] text-pink-100/85">
                     {mbti.type}
                   </span>
-                  <span className="text-[11px] text-purple-300/30">
+                  <span className="text-[10px] tracking-wide text-purple-300/40">
                     {mbti.label}
                   </span>
                 </div>
-                <p className="text-[12px] font-light leading-[1.9] tracking-wide text-purple-100/40">
+                <p className="text-[12px] font-light leading-[2] tracking-[0.03em] text-white/50">
                   {mbti.reason}
                 </p>
               </div>
@@ -216,40 +278,103 @@ export default function ResultPage() {
         {/* Share & Actions */}
         <ScrollReveal>
           <div className="flex flex-col items-center gap-3 pb-16">
-            <p className="mb-2 text-[11px] text-purple-200/30">
-              友達にもやらせてみ
+            {/* 拡張機能への誘導 */}
+            <div className="mb-12 w-full space-y-8">
+              <div>
+                <div className="divider-accent mx-auto mb-10 w-16" />
+                <p className="serif mb-3 text-[15px] font-light tracking-wide text-white/85">
+                  次は<em className="text-[var(--accent)] not-italic">あなた自身</em>を診断
+                </p>
+                <p className="serif mb-6 text-[12px] font-light leading-[1.9] tracking-wide text-white/50">
+                  惹かれるタイプと自分のタイプ、<br />
+                  組み合わせて相性まで見抜く。
+                </p>
+                <Link
+                  href="/diagnosis-self"
+                  className="btn-primary inline-block w-full text-center"
+                >
+                  相性診断にすすむ
+                </Link>
+              </div>
+
+              <div className="divider-soft" />
+
+              <div>
+                <p className="serif mb-3 text-[15px] font-light tracking-wide text-white/85">
+                  <em className="text-[var(--accent)] not-italic">気になるあの人</em>を診断
+                </p>
+                <p className="serif mb-6 text-[12px] font-light leading-[1.9] tracking-wide text-white/50">
+                  好きな人・推し・元カレ。<br />
+                  あの人のタイプを当てる。
+                </p>
+                <Link
+                  href="/diagnosis-other"
+                  className="btn-secondary inline-block w-full text-center"
+                >
+                  あの人を診断する
+                </Link>
+              </div>
+
+              <div className="divider-soft" />
+
+              <div>
+                <p className="serif mb-3 text-[15px] font-light tracking-wide text-white/85">
+                  <em className="text-[var(--accent)] not-italic">あなたを好きになる人</em>
+                </p>
+                <p className="serif mb-6 text-[12px] font-light leading-[1.9] tracking-wide text-white/50">
+                  逆診断。あなたに惹かれてくる人と、<br />
+                  無意識のサインを見抜く。
+                </p>
+                <Link
+                  href="/loved-by"
+                  className="btn-secondary inline-block w-full text-center"
+                >
+                  逆診断にすすむ
+                </Link>
+              </div>
+            </div>
+
+            <p className="serif mb-6 text-[12px] font-light tracking-wide text-white/50">
+              友達にもやらせよ
             </p>
 
-            {/* Twitter */}
-            <button
-              onClick={handleShareTwitter}
-              className="border-glow w-full border px-8 py-4 text-[13px] tracking-[0.1em] text-pink-200/60 transition-all duration-300 hover:text-pink-100"
-            >
-              Xでシェア
-            </button>
+            <div className="flex w-full flex-col gap-3">
+              <button
+                onClick={handleShareTwitter}
+                className="btn-secondary w-full"
+              >
+                Xでシェア
+              </button>
 
-            {/* LINE */}
-            <button
-              onClick={handleShareLINE}
-              className="border-glow w-full border px-8 py-4 text-[13px] tracking-[0.1em] text-pink-200/60 transition-all duration-300 hover:text-pink-100"
-            >
-              LINEで送る
-            </button>
+              <button
+                onClick={handleShareLINE}
+                className="btn-secondary w-full"
+              >
+                LINEで送る
+              </button>
 
-            {/* Save image */}
-            <button
-              onClick={handleSaveImage}
-              className="w-full border border-purple-500/10 px-8 py-3 text-[12px] tracking-[0.1em] text-purple-300/30 transition-all duration-300 hover:border-purple-500/20 hover:text-purple-200/50"
-            >
-              結果を画像で保存
-            </button>
+              <button
+                onClick={handleSaveImage}
+                className="btn-ghost w-full"
+              >
+                画像で保存
+              </button>
+            </div>
 
-            <Link
-              href="/"
-              className="mt-4 text-[11px] tracking-wider text-purple-300/20 transition-colors hover:text-pink-300/40"
-            >
-              もう一度診断する
-            </Link>
+            <div className="mt-12 flex flex-col items-center gap-4">
+              <Link
+                href="/mypage"
+                className="text-[11px] tracking-[0.3em] text-[var(--accent)]/70 transition-colors hover:text-[var(--accent)]"
+              >
+                診断シートを見る
+              </Link>
+              <Link
+                href="/"
+                className="text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+              >
+                もう一度診断する
+              </Link>
+            </div>
           </div>
         </ScrollReveal>
       </div>

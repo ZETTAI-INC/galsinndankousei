@@ -152,21 +152,22 @@ export default function DiagnosisPage() {
   // Gender selection
   if (stage === "gender") {
     return (
-      <div className="flex min-h-dvh flex-col items-center justify-center px-6">
+      <div className="flex min-h-dvh flex-col items-center justify-center px-8">
         <div className="animate-fade-in-up flex flex-col items-center">
-          <p className="mb-12 text-[15px] font-light tracking-wider text-purple-200/70">
+          <span className="heading-eyebrow mb-10">01</span>
+          <p className="serif mb-16 text-[24px] font-light tracking-wide text-white/95">
             あなたの性別は？
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <button
               onClick={() => handleGender("male")}
-              className="border-glow border px-12 py-4 text-[14px] tracking-wide text-purple-200/50 transition-all duration-300 hover:text-pink-200/80"
+              className="btn-secondary"
             >
               男性
             </button>
             <button
               onClick={() => handleGender("female")}
-              className="border-glow border px-12 py-4 text-[14px] tracking-wide text-purple-200/50 transition-all duration-300 hover:text-pink-200/80"
+              className="btn-secondary"
             >
               女性
             </button>
@@ -196,42 +197,52 @@ export default function DiagnosisPage() {
         <div className="progress-bar" style={{ width: `${progress}%` }} />
       </div>
 
-      {/* Back button + Question counter */}
-      <div className="fixed top-6 left-6 right-6 z-50 flex items-center justify-between">
+      {/* Header bar */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-white/5 bg-[#0a0810]/80 px-6 py-4 backdrop-blur-xl">
         {totalAnswered > 0 ? (
           <button
             onClick={handleBack}
-            className="text-[11px] tracking-wider text-purple-300/25 transition-colors hover:text-pink-300/60"
+            className="group flex items-center gap-2 text-[12px] tracking-[0.15em] text-white/60 transition-colors hover:text-[var(--accent)]"
           >
-            ← 戻る
+            <span className="inline-block transition-transform group-hover:-translate-x-1">←</span>
+            <span>1問戻る</span>
           </button>
         ) : (
           <span />
         )}
-        <span className="text-[11px] tracking-wider text-purple-300/25">
-          {totalAnswered + 1} / {TOTAL_QUESTIONS}
+        <span className="serif text-[13px] tracking-[0.2em] text-white/70">
+          <span className="text-[var(--accent)]">{String(totalAnswered + 1).padStart(2, "0")}</span>
+          <span className="text-white/25"> / {TOTAL_QUESTIONS}</span>
         </span>
       </div>
 
       {/* Question */}
-      <div className="w-full max-w-lg" key={animKey}>
+      <div className="w-full max-w-lg pt-16" key={animKey}>
         <div className="animate-fade-in-up flex flex-col items-center">
-          <p className="mb-12 whitespace-pre-line text-center text-[15px] font-light leading-[2] tracking-wider text-purple-100/80">
+          <p className="serif mb-16 whitespace-pre-line text-center text-[24px] font-light leading-[1.8] tracking-[0.02em] text-white">
             {currentQuestion.text}
           </p>
 
-          <div className="flex w-full flex-col gap-3">
+          <div className="flex w-full flex-col">
             {currentQuestion.choices.map((choice, i) => (
               <button
                 key={choice.id}
                 onClick={() => handleChoice(choice.scores)}
-                className="border-glow animate-fade-in-right group w-full border px-6 py-4 text-left text-[13px] tracking-wide text-purple-200/50 transition-all duration-300 hover:text-pink-100/80 active:scale-[0.98]"
-                style={{ animationDelay: `${0.15 + i * 0.08}s` }}
+                className="choice-card animate-fade-in-right group"
+                style={{
+                  animationDelay: `${0.15 + i * 0.08}s`,
+                  borderTop: i === 0 ? "1px solid rgba(245, 237, 229, 0.08)" : "none",
+                }}
               >
-                <span className="mr-3 text-[11px] text-pink-300/25 transition-colors duration-300 group-hover:text-pink-300/50">
+                <span className="serif text-[12px] tracking-[0.2em] text-[var(--accent)] transition-all group-hover:text-[var(--foreground)]">
                   {String.fromCharCode(65 + i)}
                 </span>
-                {choice.text}
+                <span className="flex-1 text-[14px] font-light tracking-wide text-white/85 group-hover:text-white">
+                  {choice.text}
+                </span>
+                <span className="text-[12px] text-white/15 transition-all group-hover:translate-x-1 group-hover:text-[var(--accent)]">
+                  →
+                </span>
               </button>
             ))}
           </div>
