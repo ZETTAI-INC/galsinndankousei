@@ -46,7 +46,7 @@ export default function TopPage() {
         </div>
 
         <div
-          className="animate-fade-in mb-10 flex items-center justify-center gap-3 text-[10px] tracking-[0.3em] text-white/30"
+          className="animate-fade-in mb-12 flex items-center justify-center gap-3 text-[10px] tracking-[0.3em] text-white/30"
           style={{ animationDelay: "2.4s" }}
         >
           <span>24 QUESTIONS</span>
@@ -54,16 +54,29 @@ export default function TopPage() {
           <span>3 MIN</span>
         </div>
 
+        {/* セカンダリナビ - もう診断済みの人向け */}
         <div
           className="animate-fade-in"
           style={{ animationDelay: "2.7s" }}
         >
-          <Link
-            href="/mypage"
-            className="text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
-          >
-            診断シートを見る →
-          </Link>
+          <div className="divider-soft mx-auto mb-8 w-16" />
+          <p className="serif mb-4 text-[11px] font-light tracking-wide text-white/40">
+            すでに診断済みなら
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href="/mypage"
+              className="btn-secondary"
+            >
+              📋 診断シート
+            </Link>
+            <Link
+              href="/mycode"
+              className="btn-secondary"
+            >
+              ⌘ マイコード発行
+            </Link>
+          </div>
         </div>
       </div>
     </div>

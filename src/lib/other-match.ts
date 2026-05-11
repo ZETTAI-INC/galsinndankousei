@@ -155,13 +155,14 @@ export function generateOtherMatch(scores: AnalysisScores): OtherMatchResult {
     ["attractJ", "attractP", "otherJ", "otherP", "J 計画 — 即興 P"],
   ] as const
   // ラベル左側の文字が低%、右側の文字が高% になるよう逆算
+  const clamp = (v: number) => Math.max(0, Math.min(100, v))
   const axisCompare = orderedDims.map(([aA, aB, oA, oB, label]) => {
     const aScore = (scores[aB] ?? 0) - (scores[aA] ?? 0)
     const oScore = (scores[oB] ?? 0) - (scores[oA] ?? 0)
     return {
       label,
-      attraction: Math.round(((aScore + 10) / 20) * 100),
-      other: Math.round(((oScore + 10) / 20) * 100),
+      attraction: clamp(Math.round(((aScore + 10) / 20) * 100)),
+      other: clamp(Math.round(((oScore + 10) / 20) * 100)),
     }
   })
 

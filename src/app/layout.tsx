@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Noto_Sans_JP, Noto_Serif_JP, Yusei_Magic, RocknRoll_One } from "next/font/google"
 import "./globals.css"
+import { TopNav } from "@/components/TopNav"
 
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans-jp",
@@ -66,6 +67,7 @@ export default function RootLayout({
         <div className="gradient-orb-1" />
         <div className="gradient-orb-2" />
         <div className="gradient-orb-3" />
+        <TopNav />
         <main className="relative z-10 flex-1">{children}</main>
       </body>
     </html>

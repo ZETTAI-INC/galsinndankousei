@@ -386,13 +386,14 @@ export function calculateMatch(
     ["selfJ", "selfP", "attractJ", "attractP", "J 計画 — 即興 P"],
   ] as const
   // ラベル左側の文字が低%、右側の文字が高% になるよう逆算
+  const clamp = (v: number) => Math.max(0, Math.min(100, v))
   const axisCompare = dimensions.map(([sA, sB, aA, aB, label]) => {
     const sScore = (scores[sB] ?? 0) - (scores[sA] ?? 0)
     const aScore = (scores[aB] ?? 0) - (scores[aA] ?? 0)
     return {
       label,
-      self: Math.round(((sScore + 10) / 20) * 100),
-      attraction: Math.round(((aScore + 10) / 20) * 100),
+      self: clamp(Math.round(((sScore + 10) / 20) * 100)),
+      attraction: clamp(Math.round(((aScore + 10) / 20) * 100)),
     }
   })
 

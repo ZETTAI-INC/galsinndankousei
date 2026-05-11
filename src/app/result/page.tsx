@@ -18,15 +18,30 @@ export default function ResultPage() {
   const siteUrl = typeof window !== "undefined" ? window.location.origin : ""
 
   useEffect(() => {
-    const stored = localStorage.getItem("diagnosis-scores")
-    if (!stored) {
-      setError("診断データが見つかりません")
+    let scores: AnalysisScores | null = null
+    try {
+      const stored = typeof window !== "undefined"
+        ? localStorage.getItem("diagnosis-scores")
+        : null
+      if (!stored) {
+        setError("診断データが見つかりません")
+        setIsLoading(false)
+        return
+      }
+      scores = JSON.parse(stored) as AnalysisScores
+    } catch {
+      setError("診断データが壊れています。もう一度診断してください。")
       setIsLoading(false)
       return
     }
 
-    const scores: AnalysisScores = JSON.parse(stored)
-    const gender = localStorage.getItem("diagnosis-gender") ?? "female"
+    const gender = (() => {
+      try {
+        return localStorage.getItem("diagnosis-gender") ?? "female"
+      } catch {
+        return "female"
+      }
+    })()
 
     fetch("/api/analyze", {
       method: "POST",
@@ -280,8 +295,32 @@ export default function ResultPage() {
           <div className="flex flex-col items-center gap-3 pb-16">
             {/* 拡張機能への誘導 */}
             <div className="mb-12 w-full space-y-8">
+              {/* 一番目立つ：マイコード発行 */}
+              <div
+                className="border border-[var(--accent)]/30 p-6"
+                style={{
+                  background: "linear-gradient(135deg, rgba(212, 165, 184, 0.10), rgba(184, 168, 212, 0.05))",
+                }}
+              >
+                <div className="divider-accent mx-auto mb-6 w-12" />
+                <p className="serif mb-3 text-center text-[16px] font-light tracking-wide text-white/95">
+                  友達と<em className="text-[var(--accent)] not-italic">相性偏差値</em>出してみる？
+                </p>
+                <p className="serif mb-6 text-center text-[12px] font-light leading-[1.9] tracking-wide text-white/55">
+                  あなたのコードを発行 → 友達に送る。<br />
+                  相手も診断したら、自動で相性が出る。
+                </p>
+                <Link
+                  href="/mycode"
+                  className="btn-primary inline-block w-full text-center"
+                >
+                  ⌘ マイコードを発行
+                </Link>
+              </div>
+
+              <div className="divider-soft" />
+
               <div>
-                <div className="divider-accent mx-auto mb-10 w-16" />
                 <p className="serif mb-3 text-[15px] font-light tracking-wide text-white/85">
                   次は<em className="text-[var(--accent)] not-italic">あなた自身</em>を診断
                 </p>
@@ -291,9 +330,9 @@ export default function ResultPage() {
                 </p>
                 <Link
                   href="/diagnosis-self"
-                  className="btn-primary inline-block w-full text-center"
+                  className="btn-secondary inline-block w-full text-center"
                 >
-                  相性診断にすすむ
+                  自己診断にすすむ
                 </Link>
               </div>
 
@@ -332,6 +371,21 @@ export default function ResultPage() {
                   逆診断にすすむ
                 </Link>
               </div>
+            </div>
+
+            {/* マイページへの大きな導線 */}
+            <div className="mb-8 w-full">
+              <Link
+                href="/mypage"
+                className="block w-full border border-white/15 p-5 text-center transition-all duration-300 hover:border-[var(--accent)]/40 hover:bg-white/[0.02]"
+              >
+                <span className="serif text-[14px] tracking-wide text-white/85">
+                  📋 診断シートを見る
+                </span>
+                <p className="serif mt-1 text-[11px] tracking-wide text-white/40">
+                  これまでの診断結果を一覧で
+                </p>
+              </Link>
             </div>
 
             <p className="serif mb-6 text-[12px] font-light tracking-wide text-white/50">

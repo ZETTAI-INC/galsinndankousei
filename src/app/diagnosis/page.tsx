@@ -149,7 +149,7 @@ export default function DiagnosisPage() {
     }
   }, [stage])
 
-  // Gender selection
+  // Gender selection / pre-diagnosis
   if (stage === "gender") {
     return (
       <div className="flex min-h-dvh flex-col items-center justify-center px-8">

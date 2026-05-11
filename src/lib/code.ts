@@ -51,7 +51,12 @@ export function encodeShareCode(input: {
 
 export function decodeShareCode(code: string): SharedData | null {
   try {
-    const cleaned = code.trim().replace(new RegExp(`^${PREFIX}-?`), "")
+    // 全角文字・空白を正規化
+    const normalized = code
+      .trim()
+      .replace(/[－‐-―]/g, "-") // 全角ハイフン類
+      .replace(/[　\s]+/g, "") // 全角空白・改行など
+    const cleaned = normalized.replace(new RegExp(`^${PREFIX}-?`, "i"), "")
     if (!cleaned) return null
     // Restore base64 padding & chars
     let b64 = cleaned.replace(/-/g, "+").replace(/_/g, "/")
@@ -82,28 +87,46 @@ export function decodeShareCode(code: string): SharedData | null {
   }
 }
 
+function safeLocalGet(key: string): string | null {
+  try {
+    if (typeof window === "undefined") return null
+    return localStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+
+function safeJsonParse<T = unknown>(s: string | null): T | null {
+  if (!s) return null
+  try {
+    return JSON.parse(s) as T
+  } catch {
+    return null
+  }
+}
+
 // 自分のlocalStorageからスコアを集めてコードを生成
 export function getMyCode(): { code: string; data: SharedData } | null {
   if (typeof window === "undefined") return null
 
-  const attractionStored = localStorage.getItem("diagnosis-scores")
-  const selfStored = localStorage.getItem("self-scores")
-  const gender = localStorage.getItem("diagnosis-gender") ?? undefined
+  const attractionStored = safeLocalGet("diagnosis-scores")
+  const selfStored = safeLocalGet("self-scores")
+  const gender = safeLocalGet("diagnosis-gender") ?? undefined
 
-  if (!attractionStored && !selfStored) return null
-
-  const attractionScores = attractionStored ? JSON.parse(attractionStored) : {}
-  const selfScores = selfStored ? JSON.parse(selfStored) : {}
+  const attractionScores = safeJsonParse<AnalysisScores>(attractionStored) ?? {}
+  const selfScores = safeJsonParse<AnalysisScores>(selfStored) ?? {}
   const scores: AnalysisScores = { ...attractionScores, ...selfScores }
+
+  if (Object.keys(scores).length === 0) return null
 
   const code = encodeShareCode({ scores, gender })
   const data: SharedData = {
     version: VERSION,
     gender,
     scores,
-    hasAttraction: !!attractionStored,
-    hasSelf: !!selfStored,
-    hasOther: false,
+    hasAttraction: hasPrefix(scores, "attract"),
+    hasSelf: hasPrefix(scores, "self"),
+    hasOther: hasPrefix(scores, "other"),
   }
   return { code, data }
 }
