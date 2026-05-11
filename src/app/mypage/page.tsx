@@ -16,6 +16,7 @@ interface StampStatus {
   readonly diagnosisPath: string
   readonly completed: boolean
   readonly result?: string // 完了時の結果テキスト
+  readonly resetKeys?: readonly string[] // やり直し時に削除するlocalStorageキー
 }
 
 export default function MyPage() {
@@ -76,6 +77,7 @@ export default function MyPage() {
         diagnosisPath: "/diagnosis",
         completed: !!attractionScores,
         result: attractionLabel,
+        resetKeys: ["diagnosis-scores", "attraction-result-cache"],
       },
       {
         id: "self",
@@ -86,6 +88,7 @@ export default function MyPage() {
         diagnosisPath: "/diagnosis-self",
         completed: !!selfScores,
         result: selfLabel,
+        resetKeys: ["self-scores"],
       },
       {
         id: "loved-by",
@@ -116,6 +119,7 @@ export default function MyPage() {
         diagnosisPath: "/diagnosis-other",
         completed: !!otherScores,
         result: otherScores && otherNameStored ? `${otherNameStored} · ${otherLabel.split(" · ")[0] ?? ""}` : otherLabel,
+        resetKeys: ["other-scores", "other-name"],
       },
     ]
 
@@ -268,10 +272,21 @@ export default function MyPage() {
 }
 
 function StampCard({ stamp, index }: { stamp: StampStatus; index: number }) {
+  const handleRetake = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!stamp.resetKeys) return
+    const message = `「${stamp.title}」をやり直しますか？\n現在の結果は削除されます。`
+    if (!confirm(message)) return
+    for (const key of stamp.resetKeys) {
+      localStorage.removeItem(key)
+    }
+    window.location.href = stamp.diagnosisPath
+  }
+
   return (
-    <Link
-      href={stamp.completed ? stamp.path : stamp.diagnosisPath}
-      className="group relative block overflow-hidden border border-white/10 p-6 transition-all duration-500 hover:border-[var(--accent)]/40"
+    <div
+      className="group relative overflow-hidden border border-white/10 transition-all duration-500 hover:border-[var(--accent)]/40"
       style={{
         background: stamp.completed
           ? "linear-gradient(135deg, rgba(212, 165, 184, 0.06), rgba(184, 168, 212, 0.03))"
@@ -279,62 +294,77 @@ function StampCard({ stamp, index }: { stamp: StampStatus; index: number }) {
         animationDelay: `${index * 100}ms`,
       }}
     >
-      {/* Stamp icon */}
-      <div className="mb-4 flex items-center justify-between">
-        <span
-          className="serif text-[36px] leading-none"
-          style={{
-            color: stamp.completed
-              ? "rgba(212, 165, 184, 0.9)"
-              : "rgba(245, 237, 229, 0.15)",
-          }}
-        >
-          {stamp.icon}
-        </span>
-        {stamp.completed ? (
+      <Link
+        href={stamp.completed ? stamp.path : stamp.diagnosisPath}
+        className="block p-6"
+      >
+        {/* Stamp icon */}
+        <div className="mb-4 flex items-center justify-between">
           <span
-            className="serif inline-flex h-7 w-7 items-center justify-center rounded-full text-[12px]"
+            className="serif text-[36px] leading-none"
             style={{
-              background: "rgba(212, 165, 184, 0.2)",
-              border: "1px solid rgba(212, 165, 184, 0.5)",
-              color: "var(--accent)",
+              color: stamp.completed
+                ? "rgba(212, 165, 184, 0.9)"
+                : "rgba(245, 237, 229, 0.15)",
             }}
           >
-            ✓
+            {stamp.icon}
           </span>
-        ) : (
-          <span className="text-[10px] tracking-[0.25em] text-white/25">
-            未取得
-          </span>
-        )}
-      </div>
-
-      <h3
-        className="serif mb-1 text-[18px] font-light tracking-wide"
-        style={{ color: stamp.completed ? "#fff" : "rgba(245, 237, 229, 0.5)" }}
-      >
-        {stamp.title}
-      </h3>
-      <p
-        className="serif mb-4 text-[11px] tracking-wide"
-        style={{ color: stamp.completed ? "rgba(245, 237, 229, 0.55)" : "rgba(245, 237, 229, 0.3)" }}
-      >
-        {stamp.subtitle}
-      </p>
-
-      {/* Result preview */}
-      {stamp.completed && stamp.result && (
-        <div className="border-t border-white/8 pt-4">
-          <p className="serif text-[11px] font-light italic leading-[1.6] tracking-wide text-[var(--accent)]/85">
-            {stamp.result}
-          </p>
+          {stamp.completed ? (
+            <span
+              className="serif inline-flex h-7 w-7 items-center justify-center rounded-full text-[12px]"
+              style={{
+                background: "rgba(212, 165, 184, 0.2)",
+                border: "1px solid rgba(212, 165, 184, 0.5)",
+                color: "var(--accent)",
+              }}
+            >
+              ✓
+            </span>
+          ) : (
+            <span className="text-[10px] tracking-[0.25em] text-white/25">
+              未取得
+            </span>
+          )}
         </div>
-      )}
 
-      {/* Hover arrow */}
-      <div className="mt-4 flex items-center justify-end text-[11px] tracking-[0.2em] text-white/30 transition-all group-hover:translate-x-1 group-hover:text-[var(--accent)]">
-        {stamp.completed ? "結果を見る →" : "やってみる →"}
-      </div>
-    </Link>
+        <h3
+          className="serif mb-1 text-[18px] font-light tracking-wide"
+          style={{ color: stamp.completed ? "#fff" : "rgba(245, 237, 229, 0.5)" }}
+        >
+          {stamp.title}
+        </h3>
+        <p
+          className="serif mb-4 text-[11px] tracking-wide"
+          style={{ color: stamp.completed ? "rgba(245, 237, 229, 0.55)" : "rgba(245, 237, 229, 0.3)" }}
+        >
+          {stamp.subtitle}
+        </p>
+
+        {/* Result preview */}
+        {stamp.completed && stamp.result && (
+          <div className="border-t border-white/8 pt-4">
+            <p className="serif text-[11px] font-light italic leading-[1.6] tracking-wide text-[var(--accent)]/85">
+              {stamp.result}
+            </p>
+          </div>
+        )}
+
+        {/* Action label */}
+        <div className="mt-4 flex items-center justify-end text-[11px] tracking-[0.2em] text-white/30 transition-all group-hover:translate-x-1 group-hover:text-[var(--accent)]">
+          {stamp.completed ? "結果を見る →" : "やってみる →"}
+        </div>
+      </Link>
+
+      {/* Retake button (完了時のみ、独自のresetKeysがある時のみ) */}
+      {stamp.completed && stamp.resetKeys && (
+        <button
+          onClick={handleRetake}
+          className="block w-full border-t border-white/8 py-3 text-[10px] tracking-[0.25em] text-white/30 transition-colors hover:bg-[var(--accent)]/5 hover:text-[var(--accent)]"
+        >
+          ↻ やり直す
+        </button>
+      )}
+    </div>
   )
 }

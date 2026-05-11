@@ -368,11 +368,22 @@ export default function ResultPage() {
               >
                 診断シートを見る
               </Link>
-              <Link
-                href="/"
+              <button
+                onClick={() => {
+                  if (!confirm("恋愛MBTI診断をやり直しますか？\n現在の結果は削除されます。")) return
+                  localStorage.removeItem("diagnosis-scores")
+                  localStorage.removeItem("attraction-result-cache")
+                  window.location.href = "/diagnosis"
+                }}
                 className="text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
               >
-                もう一度診断する
+                ↻ この診断をやり直す
+              </button>
+              <Link
+                href="/"
+                className="text-[11px] tracking-[0.3em] text-white/25 transition-colors hover:text-[var(--accent)]"
+              >
+                トップに戻る
               </Link>
             </div>
           </div>

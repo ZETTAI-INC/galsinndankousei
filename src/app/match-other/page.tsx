@@ -223,6 +223,18 @@ export default function MatchOtherPage() {
             <p className="serif mb-2 text-[13px] font-light tracking-wide text-white/85">
               他の人も診断する？
             </p>
+            <button
+              onClick={() => {
+                if (!confirm("この人の診断をやり直しますか？\n現在の結果は削除されます。")) return
+                localStorage.removeItem("other-scores")
+                localStorage.removeItem("other-name")
+                window.location.href = "/diagnosis-other"
+              }}
+              className="btn-ghost w-full text-center"
+            >
+              ↻ この人を診断し直す
+            </button>
+
             <Link href="/diagnosis-other" className="btn-primary w-full text-center">
               別の人を診断
             </Link>

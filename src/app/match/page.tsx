@@ -310,11 +310,24 @@ export default function MatchPage() {
             <Link href="/result" className="btn-secondary w-full text-center">
               恋愛タイプの結果を見る
             </Link>
+            <Link href="/mypage" className="btn-ghost w-full text-center">
+              診断シートを見る
+            </Link>
+            <button
+              onClick={() => {
+                if (!confirm("自己診断をやり直しますか？\n現在の結果は削除されます。")) return
+                localStorage.removeItem("self-scores")
+                window.location.href = "/diagnosis-self"
+              }}
+              className="mt-4 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+            >
+              ↻ 自己診断をやり直す
+            </button>
             <Link
               href="/"
-              className="mt-8 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+              className="text-[11px] tracking-[0.3em] text-white/25 transition-colors hover:text-[var(--accent)]"
             >
-              もう一度診断する
+              トップに戻る
             </Link>
           </div>
         </ScrollReveal>
