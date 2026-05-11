@@ -12,7 +12,8 @@ export interface SharedData {
   readonly hasOther: boolean
 }
 
-// 固定順序の軸（追加時は末尾のみに追加 = 後方互換性維持）
+// 固定順序の軸（短縮版：MBTI 16軸 + 主要性格軸4つ = 20軸）
+// マッチング精度のため厳選した軸のみエンコード
 const ENCODE_AXES: readonly AnalysisAxis[] = [
   // attract系（8軸）
   "attractE", "attractI", "attractJ", "attractP",
@@ -20,15 +21,13 @@ const ENCODE_AXES: readonly AnalysisAxis[] = [
   // self系（8軸）
   "selfE", "selfI", "selfJ", "selfP",
   "selfT", "selfF", "selfS", "selfN",
-  // 性格軸（20軸）
-  "lowTempEmotion", "lateNightVibe", "urbanSense", "dailyLifeFeel",
-  "awkwardness", "neglectTolerance", "loveExpression", "lineTemperature",
-  "humanity", "emotionalInstabilityTolerance", "silenceDependency",
-  "innocenceTolerance", "conversationDensity", "distanceSense",
-  "independence", "vibeMatch", "edginessTolerance", "caretakerDependency",
-  "understandDesire", "saveDesire",
+  // 主要性格軸（4軸のみ）
+  "lowTempEmotion",
+  "loveExpression",
+  "silenceDependency",
+  "understandDesire",
 ]
-// 計36軸 × 2桁 = 72桁
+// 計20軸 × 1桁 = 20桁
 
 function hasPrefix(scores: AnalysisScores, prefix: string): boolean {
   return Object.keys(scores).some((k) => k.startsWith(prefix) && (scores[k] ?? 0) !== 0)
@@ -37,7 +36,22 @@ function hasPrefix(scores: AnalysisScores, prefix: string): boolean {
 function computeChecksum(s: string): string {
   let sum = 0
   for (const ch of s) sum += parseInt(ch, 10) || 0
-  return (sum % 100).toString().padStart(2, "0")
+  return (sum % 10).toString()
+}
+
+// スコア (0-30+) を 1桁 (0-9) に圧縮
+function compressScore(score: number): string {
+  const v = Math.max(0, Math.min(30, Math.round(score)))
+  // 0→0, 1-3→1, 4-6→2, ..., 28-30→9
+  return Math.min(9, Math.floor(v / 3) + (v > 0 && v <= 3 ? 1 : 0))
+    .toString()
+}
+
+function expandScore(digit: string): number {
+  const n = parseInt(digit, 10) || 0
+  // 復元時の概算スコア（中央値で近似）
+  if (n === 0) return 0
+  return n * 3 - 1
 }
 
 // 数字のみエンコード（4桁ごとに区切り）
@@ -51,15 +65,14 @@ export function encodeShareCode(input: {
   let scoresStr = ""
   for (const axis of ENCODE_AXES) {
     const raw = input.scores[axis] ?? 0
-    const score = Math.max(0, Math.min(99, Math.round(raw)))
-    scoresStr += score.toString().padStart(2, "0")
+    scoresStr += compressScore(raw)
   }
 
-  const payload = v + g + scoresStr // 1 + 1 + 72 = 74桁
-  const checksum = computeChecksum(payload) // 2桁
-  const raw = payload + checksum // 76桁
+  const payload = v + g + scoresStr // 1 + 1 + 20 = 22桁
+  const checksum = computeChecksum(payload) // 1桁
+  const raw = payload + checksum // 23桁
 
-  // 4桁ごとに「-」で区切る
+  // 4桁ごとに「-」で区切る → 6グループ
   return raw.match(/.{1,4}/g)?.join("-") ?? raw
 }
 
@@ -71,11 +84,11 @@ export function decodeShareCode(code: string): SharedData | null {
       .replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
       .replace(/\D/g, "")
 
-    if (digits.length < 74) return null
+    if (digits.length < 22) return null
 
-    // 末尾2桁がチェックサム
-    const payload = digits.slice(0, digits.length - 2)
-    const checksum = digits.slice(-2)
+    // 末尾1桁がチェックサム
+    const payload = digits.slice(0, digits.length - 1)
+    const checksum = digits.slice(-1)
     if (computeChecksum(payload) !== checksum) return null
 
     const v = parseInt(payload.slice(0, 1), 10)
@@ -84,9 +97,9 @@ export function decodeShareCode(code: string): SharedData | null {
 
     const scores: Record<string, number> = {}
     for (let i = 0; i < ENCODE_AXES.length; i++) {
-      const slice = scoresStr.slice(i * 2, i * 2 + 2)
-      if (slice.length !== 2) break
-      const score = parseInt(slice, 10)
+      const digit = scoresStr.charAt(i)
+      if (!digit) break
+      const score = expandScore(digit)
       if (score > 0) {
         scores[ENCODE_AXES[i]] = score
       }
