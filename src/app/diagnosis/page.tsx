@@ -4,8 +4,6 @@ import { useCallback, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import {
   phase1Questions,
-  phase2Questions,
-  phase3Questions,
   determinePhase1Type,
   determinePhase3Type,
   TOTAL_QUESTIONS,
@@ -13,6 +11,7 @@ import {
   PHASE2_COUNT,
   PHASE3_COUNT,
 } from "@/lib/questions"
+import { selectAdaptivePhase2, selectAdaptivePhase3 } from "@/lib/adaptive"
 import type { AnalysisAxis, AnalysisScores, Gender, Phase1Type, Phase3Type, Question } from "@/lib/types"
 import { LoadingAnalysis } from "@/components/LoadingAnalysis"
 import { PhaseLoading } from "@/components/PhaseLoading"
@@ -46,6 +45,8 @@ export default function DiagnosisPage() {
 
   const [phase1Type, setPhase1Type] = useState<Phase1Type>("IP")
   const [phase3Type, setPhase3Type] = useState<Phase3Type>("NF")
+  const [adaptivePhase2, setAdaptivePhase2] = useState<readonly Question[]>([])
+  const [adaptivePhase3, setAdaptivePhase3] = useState<readonly Question[]>([])
 
   const progress = (totalAnswered / TOTAL_QUESTIONS) * 100
 
@@ -54,9 +55,9 @@ export default function DiagnosisPage() {
       case "phase1":
         return phase1Questions
       case "phase2":
-        return phase2Questions[phase1Type]
+        return adaptivePhase2
       case "phase3":
-        return phase3Questions[phase3Type]
+        return adaptivePhase3
       default:
         return []
     }
@@ -120,10 +121,16 @@ export default function DiagnosisPage() {
         if (stage === "phase1") {
           const type = determinePhase1Type(newScores)
           setPhase1Type(type)
+          // Phase 1終了時に適応的にPhase 2の質問を選ぶ
+          const adaptiveQs = selectAdaptivePhase2(type, newScores)
+          setAdaptivePhase2(adaptiveQs)
           setStage("loading1")
         } else if (stage === "phase2") {
           const type = determinePhase3Type(newScores)
           setPhase3Type(type)
+          // Phase 2終了時に適応的にPhase 3の質問を選ぶ
+          const adaptiveQs = selectAdaptivePhase3(type, newScores)
+          setAdaptivePhase3(adaptiveQs)
           setStage("loading2")
         } else if (stage === "phase3") {
           finish(newScores, gender)
