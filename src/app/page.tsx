@@ -87,6 +87,11 @@ export default function TopPage() {
               ⌘ マイコード発行
             </Link>
           </div>
+          <div className="mt-3 flex justify-center">
+            <Link href="/daily" className="btn-ghost">
+              ✦ 今日の沼り危険度
+            </Link>
+          </div>
         </div>
       </div>
     </div>
