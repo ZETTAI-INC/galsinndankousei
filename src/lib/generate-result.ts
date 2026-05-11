@@ -1,4 +1,5 @@
 import type { AnalysisResult, AnalysisScores, Gender } from "./types"
+import { detectContradictions } from "./contradictions"
 
 interface AxisEntry {
   readonly key: string
@@ -1157,6 +1158,9 @@ export function generateResult(
     value: Math.round((score / maxScore) * 100),
   }))
 
+  // 矛盾検出
+  const contradictions = detectContradictions(scores)
+
   return {
     displayName: badge.displayName,
     displayType: topType,
@@ -1167,5 +1171,6 @@ export function generateResult(
     mbtiAnalysis,
     microTraits,
     mbtiRanking,
+    contradictions,
   }
 }

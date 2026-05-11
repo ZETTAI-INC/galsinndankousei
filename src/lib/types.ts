@@ -171,6 +171,15 @@ export interface MatchResult {
   }[]
 }
 
+export interface ContradictionData {
+  readonly label: string
+  readonly leftAxis: { readonly key: string; readonly label: string; readonly score: number }
+  readonly rightAxis: { readonly key: string; readonly label: string; readonly score: number }
+  readonly intensity: number
+  readonly text: string
+  readonly summary: string
+}
+
 export interface AnalysisResult {
   readonly displayName: string
   readonly displayType: string // top MBTI like "INFP"
@@ -185,4 +194,5 @@ export interface AnalysisResult {
   }[]
   readonly microTraits: readonly string[]
   readonly mbtiRanking: readonly MbtiAttraction[]
+  readonly contradictions?: readonly ContradictionData[]
 }

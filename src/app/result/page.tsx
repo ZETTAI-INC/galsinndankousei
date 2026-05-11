@@ -246,6 +246,80 @@ export default function ResultPage() {
           ))}
         </section>
 
+        {/* Contradictions - 矛盾検出 */}
+        {result.contradictions && result.contradictions.length > 0 && (
+          <section className="mb-20">
+            <ScrollReveal>
+              <p className="mb-6">
+                <span className="heading-eyebrow">あなたの恋愛の矛盾</span>
+              </p>
+              <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
+                <span className="highlight-pink">気づいてた？</span>この組み合わせ
+              </p>
+            </ScrollReveal>
+
+            <div className="flex flex-col gap-8">
+              {result.contradictions.map((c, i) => (
+                <ScrollReveal key={i} delay={i * 200}>
+                  <div
+                    className="border border-[var(--accent)]/20 p-6"
+                    style={{ background: "rgba(212, 165, 184, 0.04)" }}
+                  >
+                    {/* Label */}
+                    <p className="serif mb-5 text-[16px] font-light tracking-wide text-[var(--accent)]">
+                      <em>{c.label}</em>
+                    </p>
+
+                    {/* Visual VS */}
+                    <div className="mb-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                      <div className="text-right">
+                        <p className="serif text-[13px] tracking-wide text-white/85">
+                          {c.leftAxis.label}
+                        </p>
+                        <p className="serif mt-1 text-[20px] font-light text-[var(--accent)]">
+                          {c.leftAxis.score}
+                        </p>
+                      </div>
+                      <div className="serif text-[14px] text-white/40">×</div>
+                      <div>
+                        <p className="serif text-[13px] tracking-wide text-white/85">
+                          {c.rightAxis.label}
+                        </p>
+                        <p className="serif mt-1 text-[20px] font-light text-[var(--accent)]">
+                          {c.rightAxis.score}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Intensity bar */}
+                    <div className="mb-5">
+                      <div className="mb-2 flex items-baseline justify-between">
+                        <span className="text-[10px] tracking-[0.2em] text-white/40">
+                          矛盾の強さ
+                        </span>
+                        <span className="serif text-[11px] text-[var(--accent)]/80">
+                          {c.intensity.toFixed(1)} / 10
+                        </span>
+                      </div>
+                      <div className="h-px w-full bg-white/10">
+                        <div
+                          className="h-full bg-[var(--accent)]"
+                          style={{ width: `${(c.intensity / 10) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Text */}
+                    <p className="serif text-[13px] font-light leading-[2.1] tracking-wide text-white/85">
+                      {c.text}
+                    </p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Micro Traits */}
         <section className="mb-20">
           <ScrollReveal>
