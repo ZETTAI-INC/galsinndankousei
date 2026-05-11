@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import {
   phase1Questions,
@@ -42,6 +42,13 @@ export default function DiagnosisPage() {
   const [scores, setScores] = useState<AnalysisScores>({})
   const [animKey, setAnimKey] = useState(0)
   const historyRef = useRef<HistoryEntry[]>([])
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [])
 
   const [phase1Type, setPhase1Type] = useState<Phase1Type>("IP")
   const [phase3Type, setPhase3Type] = useState<Phase3Type>("NF")
@@ -90,7 +97,7 @@ export default function DiagnosisPage() {
       setStage("analyzing")
       localStorage.setItem("diagnosis-scores", JSON.stringify(finalScores))
       localStorage.setItem("diagnosis-gender", g)
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         router.push("/result")
       }, 5000)
     },

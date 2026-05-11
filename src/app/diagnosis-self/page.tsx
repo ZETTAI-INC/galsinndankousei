@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { selfQuestions, SELF_QUESTION_COUNT } from "@/lib/questions-self"
 import type { AnalysisAxis, AnalysisScores } from "@/lib/types"
@@ -12,6 +12,11 @@ export default function DiagnosisSelfPage() {
   const [scores, setScores] = useState<AnalysisScores>({})
   const [animKey, setAnimKey] = useState(0)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+  }, [])
 
   const question = selfQuestions[currentIndex]
   const progress = (currentIndex / SELF_QUESTION_COUNT) * 100
@@ -39,7 +44,7 @@ export default function DiagnosisSelfPage() {
         if (typeof window !== "undefined") {
           localStorage.setItem("self-scores", JSON.stringify(newScores))
         }
-        setTimeout(() => {
+        timeoutRef.current = setTimeout(() => {
           router.push("/match")
         }, 3500)
       }

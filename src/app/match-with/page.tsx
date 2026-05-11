@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useCallback, useEffect, useState } from "react"
+import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { decodeShareCode, getMyCode, type SharedData } from "@/lib/code"
@@ -18,11 +18,16 @@ function MatchWithContent() {
   const [result, setResult] = useState<PairMatchResult | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // 自分のデータをロード
   useEffect(() => {
     const my = getMyCode()
     if (my) setMyData(my.data)
+  }, [])
+
+  useEffect(() => () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
   }, [])
 
   const runMatch = useCallback((code: string) => {
@@ -42,7 +47,7 @@ function MatchWithContent() {
       return
     }
 
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       const matchResult = calculatePairMatch(my.data.scores, decoded.scores)
       setResult(matchResult)
       setIsAnalyzing(false)

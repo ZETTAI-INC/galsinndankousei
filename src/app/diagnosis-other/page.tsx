@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { otherQuestions, OTHER_QUESTION_COUNT } from "@/lib/questions-other"
 import type { AnalysisAxis, AnalysisScores } from "@/lib/types"
@@ -15,6 +15,11 @@ export default function DiagnosisOtherPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [scores, setScores] = useState<AnalysisScores>({})
   const [animKey, setAnimKey] = useState(0)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+  }, [])
 
   const question = otherQuestions[currentIndex]
   const progress = (currentIndex / OTHER_QUESTION_COUNT) * 100
@@ -56,7 +61,7 @@ export default function DiagnosisOtherPage() {
         if (typeof window !== "undefined") {
           localStorage.setItem("other-scores", JSON.stringify(newScores))
         }
-        setTimeout(() => {
+        timeoutRef.current = setTimeout(() => {
           router.push("/match-other")
         }, 3500)
       }
