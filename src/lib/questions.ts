@@ -47,12 +47,12 @@ export const phase1Questions: readonly Question[] = [
   },
   {
     id: 5,
-    text: "持ってるバッグの中、\n惹かれる中身は？",
+    text: "電車を待ってる時の\n姿勢、惹かれるのは？",
     choices: [
-      { id: "5a", text: "ポーチで仕切りがきっちり", scores: { attractJ: 3, independence: 1, dailyLifeFeel: 1 } },
-      { id: "5b", text: "文庫本とイヤホンが入ってる", scores: { attractI: 3, silenceDependency: 2, lateNightVibe: 1 } },
-      { id: "5c", text: "誰かに渡せる小さなお菓子", scores: { attractE: 2, caretakerDependency: 2, humanity: 1 } },
-      { id: "5d", text: "全部ぐちゃっと突っ込まれてる", scores: { attractP: 2, dailyLifeFeel: 1, awkwardness: 1 } },
+      { id: "5a", text: "壁にもたれてスマホ見てる", scores: { attractI: 2, lowTempEmotion: 2, lateNightVibe: 1 } },
+      { id: "5b", text: "イヤホンしながら本を読んでる", scores: { attractI: 3, silenceDependency: 2, urbanSense: 1 } },
+      { id: "5c", text: "ぼーっと改札のほうを見てる", scores: { attractP: 2, lateNightVibe: 1, lowTempEmotion: 1 } },
+      { id: "5d", text: "目的のとこへ迷わず歩いてる", scores: { attractJ: 3, independence: 2, urbanSense: 1 } },
     ],
   },
   {
@@ -96,12 +96,12 @@ export const phase1Questions: readonly Question[] = [
 const phase2EJ: readonly Question[] = [
   {
     id: 201,
-    text: "気になる人のスマホ、\n待ち受け画面は？",
+    text: "話す時の言葉の選び方、\n惹かれるのは？",
     choices: [
-      { id: "201a", text: "シンプルな黒一色や時計だけ", scores: { attractT: 3, lowTempEmotion: 2, urbanSense: 1 } },
-      { id: "201b", text: "家族やペットの写真", scores: { attractF: 3, humanity: 2, loveExpression: 1 } },
-      { id: "201c", text: "目標を書いた壁紙", scores: { attractT: 2, attractS: 1, independence: 2 } },
-      { id: "201d", text: "推しの写真や好きな絵", scores: { attractF: 2, attractN: 1, innocenceTolerance: 1 } },
+      { id: "201a", text: "短くて的確、無駄がない", scores: { attractT: 3, lowTempEmotion: 2, urbanSense: 1 } },
+      { id: "201b", text: "相手の気持ちを汲んで柔らかく", scores: { attractF: 3, humanity: 2, caretakerDependency: 1 } },
+      { id: "201c", text: "具体例と数字を交えて話す", scores: { attractT: 2, attractS: 2, independence: 1 } },
+      { id: "201d", text: "感情がにじむような言い方", scores: { attractF: 2, attractN: 1, loveExpression: 1 } },
     ],
   },
   {
@@ -156,12 +156,12 @@ const phase2EJ: readonly Question[] = [
   },
   {
     id: 207,
-    text: "褒め方で、\n一番嬉しいのは？",
+    text: "誰かを褒めてる相手の\n言い方、惹かれるのは？",
     choices: [
-      { id: "207a", text: "「ここの○○が良かった」と具体的", scores: { attractT: 2, attractS: 2, understandDesire: 1 } },
-      { id: "207b", text: "「すごい！」と即リアクション", scores: { attractF: 2, attractS: 1, innocenceTolerance: 2 } },
-      { id: "207c", text: "「君なら出来ると思ってた」", scores: { attractN: 3, loveExpression: 1, understandDesire: 1 } },
-      { id: "207d", text: "何も言わずただ満足そうに頷く", scores: { attractT: 1, awkwardness: 2, lowTempEmotion: 2 } },
+      { id: "207a", text: "「ここが良かった」と具体的に言う", scores: { attractT: 2, attractS: 2, understandDesire: 1 } },
+      { id: "207b", text: "「すごい！」と素直にリアクション", scores: { attractF: 2, attractS: 1, innocenceTolerance: 2 } },
+      { id: "207c", text: "「君なら出来ると思ってた」と未来を言う", scores: { attractN: 3, loveExpression: 1, understandDesire: 1 } },
+      { id: "207d", text: "何も言わず満足そうに頷くだけ", scores: { attractT: 1, awkwardness: 2, lowTempEmotion: 2 } },
     ],
   },
   {
@@ -170,8 +170,8 @@ const phase2EJ: readonly Question[] = [
     choices: [
       { id: "208a", text: "黙って先に払って何も言わない", scores: { attractT: 2, awkwardness: 2, loveExpression: 1, caretakerDependency: 1 } },
       { id: "208b", text: "「次は奢ってね」と笑って払う", scores: { attractF: 2, vibeMatch: 2, humanity: 1 } },
-      { id: "208c", text: "割り勘を一瞬で計算してくる", scores: { attractT: 3, attractS: 1, urbanSense: 1, distanceSense: 1 } },
-      { id: "208d", text: "ポイントカードを当然のように出す", scores: { attractS: 3, dailyLifeFeel: 2, independence: 1 } },
+      { id: "208c", text: "サッと割り勘を提案してくれる", scores: { attractT: 3, attractS: 1, urbanSense: 1, distanceSense: 1 } },
+      { id: "208d", text: "「ここ前から来たかった」と楽しそう", scores: { attractS: 2, dailyLifeFeel: 1, innocenceTolerance: 2 } },
     ],
   },
 ]
@@ -274,22 +274,22 @@ const phase2IJ: readonly Question[] = [
   },
   {
     id: 222,
-    text: "持ってる本の種類、\n惹かれるのは？",
+    text: "好きな話題の話し方、\n惹かれるのは？",
     choices: [
-      { id: "222a", text: "同じ著者の作品が全巻揃ってる", scores: { attractS: 3, independence: 2, dailyLifeFeel: 1 } },
-      { id: "222b", text: "ジャンルがバラバラに散らばってる", scores: { attractN: 3, conversationDensity: 1, edginessTolerance: 1 } },
-      { id: "222c", text: "実用書と参考書ばっかり", scores: { attractS: 2, attractT: 2, independence: 1 } },
-      { id: "222d", text: "哲学書と詩集が混ざってる", scores: { attractN: 2, attractT: 1, lateNightVibe: 2, lowTempEmotion: 1 } },
+      { id: "222a", text: "同じテーマを何時間も深掘りする", scores: { attractS: 3, independence: 2, understandDesire: 1 } },
+      { id: "222b", text: "話題が次々飛んでいく", scores: { attractN: 3, conversationDensity: 1, edginessTolerance: 1 } },
+      { id: "222c", text: "実用的で役立つ話が多い", scores: { attractS: 2, attractT: 2, independence: 1 } },
+      { id: "222d", text: "抽象的で詩みたいな話をする", scores: { attractN: 2, attractT: 1, lateNightVibe: 2, lowTempEmotion: 1 } },
     ],
   },
   {
     id: 223,
-    text: "字の書き方、\n惹かれるのは？",
+    text: "メモを取る時の動き、\n惹かれるのは？",
     choices: [
-      { id: "223a", text: "角ばっててはっきり読める", scores: { attractT: 3, urbanSense: 1, independence: 1 } },
-      { id: "223b", text: "丸くて少し感情がにじむ", scores: { attractF: 3, humanity: 2, emotionalInstabilityTolerance: 1 } },
-      { id: "223c", text: "小さくて整列してる", scores: { attractS: 2, attractT: 1, lowTempEmotion: 1, awkwardness: 1 } },
-      { id: "223d", text: "線が長くて流れるよう", scores: { attractN: 2, attractF: 1, lateNightVibe: 1, understandDesire: 1 } },
+      { id: "223a", text: "箇条書きで素早くまとめる", scores: { attractT: 3, urbanSense: 1, independence: 1 } },
+      { id: "223b", text: "余白に感想や絵を描く", scores: { attractF: 3, humanity: 2, innocenceTolerance: 1 } },
+      { id: "223c", text: "全部覚えるからメモしない", scores: { attractS: 1, attractT: 2, lowTempEmotion: 2, independence: 1 } },
+      { id: "223d", text: "気になった言葉だけ抜き出す", scores: { attractN: 2, attractF: 1, lateNightVibe: 1, understandDesire: 1 } },
     ],
   },
   {
@@ -314,12 +314,12 @@ const phase2IJ: readonly Question[] = [
   },
   {
     id: 226,
-    text: "約束に対する姿勢、\n惹かれるのは？",
+    text: "約束した時間に対する姿勢、\n惹かれるのは？",
     choices: [
-      { id: "226a", text: "10分前には必ず着いてる", scores: { attractS: 3, independence: 2, loveExpression: 1 } },
-      { id: "226b", text: "理由を説明できれば変更も柔軟", scores: { attractN: 2, attractT: 2, urbanSense: 1 } },
-      { id: "226c", text: "「来週話したいことある」を忘れない", scores: { attractS: 2, attractF: 1, understandDesire: 2, humanity: 1 } },
-      { id: "226d", text: "予定を共有しなくても合う", scores: { attractN: 2, attractF: 1, silenceDependency: 2 } },
+      { id: "226a", text: "毎回ちょうど10分前に着いてる", scores: { attractS: 3, independence: 2, loveExpression: 1 } },
+      { id: "226b", text: "遅れる時は理由をきちんと伝える", scores: { attractN: 2, attractT: 2, urbanSense: 1 } },
+      { id: "226c", text: "前に話してた小さい予定も覚えてる", scores: { attractS: 2, attractF: 1, understandDesire: 2, humanity: 1 } },
+      { id: "226d", text: "細かい時間に縛られず気楽", scores: { attractN: 2, attractF: 1, silenceDependency: 2 } },
     ],
   },
   {
@@ -348,12 +348,12 @@ const phase2IJ: readonly Question[] = [
 const phase2IP: readonly Question[] = [
   {
     id: 231,
-    text: "気になる人の\n部屋にあるもの、惹かれるのは？",
+    text: "好きなことを話してる時の\n表情、惹かれるのは？",
     choices: [
-      { id: "231a", text: "床に積まれた本と参考資料", scores: { attractT: 3, attractN: 1, independence: 2 } },
-      { id: "231b", text: "好きな絵やポスターが壁いっぱい", scores: { attractF: 2, attractN: 2, urbanSense: 1, innocenceTolerance: 1 } },
-      { id: "231c", text: "整頓されたデスクと観葉植物", scores: { attractS: 3, dailyLifeFeel: 2, lowTempEmotion: 1 } },
-      { id: "231d", text: "書きかけのノートが机に開きっぱなし", scores: { attractF: 2, attractN: 2, lateNightVibe: 2 } },
+      { id: "231a", text: "急に熱量が上がって早口になる", scores: { attractT: 3, attractN: 1, independence: 2 } },
+      { id: "231b", text: "目が輝いて時々遠くを見る", scores: { attractF: 2, attractN: 2, understandDesire: 1, innocenceTolerance: 1 } },
+      { id: "231c", text: "丁寧に手を動かしながら説明する", scores: { attractS: 3, dailyLifeFeel: 2, lowTempEmotion: 1 } },
+      { id: "231d", text: "ぽつぽつ言葉を選んで話す", scores: { attractF: 2, attractN: 2, lateNightVibe: 2 } },
     ],
   },
   {
@@ -398,12 +398,12 @@ const phase2IP: readonly Question[] = [
   },
   {
     id: 236,
-    text: "趣味の続け方、\n惹かれるのは？",
+    text: "趣味の話し方、\n惹かれるのは？",
     choices: [
-      { id: "236a", text: "一つを何年も静かに続けてる", scores: { attractT: 2, attractS: 1, independence: 3 } },
-      { id: "236b", text: "気分で楽器や絵を行き来する", scores: { attractF: 2, attractN: 2, lateNightVibe: 1, innocenceTolerance: 1 } },
-      { id: "236c", text: "料理やDIYでものを増やしてる", scores: { attractS: 3, dailyLifeFeel: 3 } },
-      { id: "236d", text: "誰にも見せないノートを書き続けてる", scores: { attractN: 3, understandDesire: 2 } },
+      { id: "236a", text: "「これずっと続けてる」と一筋", scores: { attractT: 2, attractS: 1, independence: 3 } },
+      { id: "236b", text: "「最近ハマってる」が毎回違う", scores: { attractF: 2, attractN: 2, lateNightVibe: 1, innocenceTolerance: 1 } },
+      { id: "236c", text: "手作りしたものを見せてくれる", scores: { attractS: 3, dailyLifeFeel: 3 } },
+      { id: "236d", text: "「言葉にすると違っちゃう」と濁す", scores: { attractN: 3, understandDesire: 2, awkwardness: 1 } },
     ],
   },
   {
@@ -559,12 +559,12 @@ const phase3NT: readonly Question[] = [
   },
   {
     id: 314,
-    text: "天才っぽさを感じる瞬間、\n惹かれるのは？",
+    text: "「この人賢い」と思う瞬間、\n惹かれるのは？",
     choices: [
-      { id: "314a", text: "圧倒的な集中で時間を忘れてる", scores: { independence: 3, lowTempEmotion: 2 } },
-      { id: "314b", text: "常識にない発想がぽろっと出る", scores: { edginessTolerance: 2, vibeMatch: 1, innocenceTolerance: 2 } },
-      { id: "314c", text: "何でもすぐ習得していく", scores: { independence: 2, urbanSense: 2, distanceSense: 1 } },
-      { id: "314d", text: "社会に馴染めないのに結果は出す", scores: { edginessTolerance: 3, saveDesire: 2 } },
+      { id: "314a", text: "一つのことに集中して時間を忘れてる", scores: { independence: 3, lowTempEmotion: 2 } },
+      { id: "314b", text: "予想外の角度から意見を出してくる", scores: { edginessTolerance: 2, vibeMatch: 1, innocenceTolerance: 2 } },
+      { id: "314c", text: "初めてのことをすぐ理解する", scores: { independence: 2, urbanSense: 2, distanceSense: 1 } },
+      { id: "314d", text: "周りに合わせないけど結果を出す", scores: { edginessTolerance: 3, saveDesire: 2 } },
     ],
   },
   {
@@ -615,7 +615,7 @@ const phase3SF: readonly Question[] = [
     id: 321,
     text: "日常で「いいな」と思う\n相手の動きは？",
     choices: [
-      { id: "321a", text: "鍋の蓋を開けて湯気の匂いを嗅いでる", scores: { caretakerDependency: 3, dailyLifeFeel: 2, humanity: 1 } },
+      { id: "321a", text: "キッチンで黙々と料理してる", scores: { caretakerDependency: 3, dailyLifeFeel: 2, humanity: 1 } },
       { id: "321b", text: "「今日どうだった？」と先に聞く", scores: { humanity: 2, loveExpression: 2, lineTemperature: 1 } },
       { id: "321c", text: "ソファで疲れて寝ちゃってる", scores: { dailyLifeFeel: 3, saveDesire: 1, silenceDependency: 1 } },
       { id: "321d", text: "重い荷物をさりげなく持ち替えてくれる", scores: { caretakerDependency: 3, awkwardness: 1 } },
