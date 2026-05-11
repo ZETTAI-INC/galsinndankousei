@@ -19,6 +19,7 @@ import { PhaseLoading } from "@/components/PhaseLoading"
 
 type Stage =
   | "gender"
+  | "intro"
   | "phase1"
   | "loading1"
   | "phase2"
@@ -74,6 +75,11 @@ export default function DiagnosisPage() {
 
   const handleGender = useCallback((g: Gender) => {
     setGender(g)
+    setStage("intro")
+    setAnimKey((k) => k + 1)
+  }, [])
+
+  const handleIntroDone = useCallback(() => {
     setStage("phase1")
     setAnimKey((k) => k + 1)
   }, [])
@@ -177,6 +183,45 @@ export default function DiagnosisPage() {
     )
   }
 
+  // Intro - 質問の前置き
+  if (stage === "intro") {
+    return (
+      <div className="flex min-h-dvh flex-col items-center justify-center px-8 py-16">
+        <div className="animate-fade-in-up flex max-w-md flex-col items-center text-center">
+          <span className="heading-eyebrow mb-10">02</span>
+
+          <p className="serif mb-3 text-[14px] tracking-wide text-white/60">
+            ここから24問
+          </p>
+
+          <h2 className="title-editorial mb-8 text-[28px] sm:text-[34px]">
+            <em>気になる人</em>
+            <br />
+            について答えて
+          </h2>
+
+          <div className="divider-accent mx-auto mb-8 w-12" />
+
+          <p className="serif mb-12 text-[14px] font-light leading-[2.2] tracking-wide text-white/80">
+            あなたが「いいな」と
+            <br />
+            <span className="highlight-pink">無意識に目で追ってしまう人</span>を
+            <br />
+            想像しながら答えてください。
+          </p>
+
+          <p className="serif mb-12 text-[12px] font-light leading-[2] tracking-wide text-white/50">
+            自分自身のことを答える診断<br />ではありません
+          </p>
+
+          <button onClick={handleIntroDone} className="btn-primary">
+            診断をはじめる
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   // Loading screens
   if (stage === "loading1") {
     return <PhaseLoading phase={1} onComplete={handlePhaseLoadingComplete} />
@@ -198,7 +243,14 @@ export default function DiagnosisPage() {
       </div>
 
       {/* Header bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-white/5 bg-[#0a0810]/80 px-6 py-4 backdrop-blur-xl">
+      <div className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0a0810]/80 backdrop-blur-xl">
+        {/* 文脈リマインダー */}
+        <div className="border-b border-white/[0.03] py-1.5 text-center">
+          <span className="text-[10px] tracking-[0.15em] text-[var(--accent)]/60">
+            あなたが惹かれる人について答えてね
+          </span>
+        </div>
+        <div className="flex items-center justify-between px-6 py-3">
         {totalAnswered > 0 ? (
           <button
             onClick={handleBack}
@@ -214,10 +266,11 @@ export default function DiagnosisPage() {
           <span className="text-[var(--accent)]">{String(totalAnswered + 1).padStart(2, "0")}</span>
           <span className="text-white/25"> / {TOTAL_QUESTIONS}</span>
         </span>
+        </div>
       </div>
 
       {/* Question */}
-      <div className="w-full max-w-lg pt-16" key={animKey}>
+      <div className="w-full max-w-lg pt-24" key={animKey}>
         <div className="animate-fade-in-up flex flex-col items-center">
           <p className="serif mb-16 whitespace-pre-line text-center text-[24px] font-light leading-[1.8] tracking-[0.02em] text-white">
             {currentQuestion.text}

@@ -7,7 +7,7 @@ import type { AnalysisScores, Phase1Type, Phase3Type, Question } from "./types"
 export const phase1Questions: readonly Question[] = [
   {
     id: 1,
-    text: "写真フォルダに、\n何が多い人？",
+    text: "気になる相手の写真フォルダ、\n何が多そう？",
     choices: [
       { id: "1a", text: "空や夕焼けばっかり", scores: { attractI: 3, lateNightVibe: 2, lowTempEmotion: 1 } },
       { id: "1b", text: "友達と撮った集合写真", scores: { attractE: 3, humanity: 2, vibeMatch: 1 } },
@@ -17,7 +17,7 @@ export const phase1Questions: readonly Question[] = [
   },
   {
     id: 2,
-    text: "朝の挨拶の\nテンポはどんな感じ？",
+    text: "相手の朝の挨拶、\nどんなテンポ？",
     choices: [
       { id: "2a", text: "「おはよ！」と声が一段高い", scores: { attractE: 3, vibeMatch: 2, innocenceTolerance: 1 } },
       { id: "2b", text: "目を合わせて軽く頷くだけ", scores: { attractI: 3, lowTempEmotion: 2, distanceSense: 1 } },
