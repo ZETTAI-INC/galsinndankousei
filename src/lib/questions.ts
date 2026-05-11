@@ -51,7 +51,7 @@ export const phase1Questions: readonly Question[] = [
     choices: [
       { id: "5a", text: "壁にもたれてスマホ見てる", scores: { attractI: 2, lowTempEmotion: 2, lateNightVibe: 1, distanceSense: 1, urbanSense: 0.5, edginessTolerance: 0.5 } },
       { id: "5b", text: "イヤホンしながら本を読んでる", scores: { attractI: 3, silenceDependency: 2, urbanSense: 1, independence: 1, understandDesire: 0.5, lowTempEmotion: 0.5 } },
-      { id: "5c", text: "ぼーっと改札のほうを見てる", scores: { attractP: 2, lateNightVibe: 1, lowTempEmotion: 1, silenceDependency: 1, awkwardness: 0.5, emotionalInstabilityTolerance: 0.5 } },
+      { id: "5c", text: "電話で楽しそうに話してる", scores: { attractE: 3, vibeMatch: 2, lineTemperature: 1, humanity: 1, conversationDensity: 0.5, innocenceTolerance: 0.5 } },
       { id: "5d", text: "目的のとこへ迷わず歩いてる", scores: { attractJ: 3, independence: 2, urbanSense: 1, lowTempEmotion: 1, distanceSense: 0.5, dailyLifeFeel: 0.5 } },
     ],
   },
@@ -168,7 +168,7 @@ const phase2EJ: readonly Question[] = [
     id: 208,
     text: "会計の時の振る舞い、\n惹かれるのは？",
     choices: [
-      { id: "208a", text: "黙って先に払って何も言わない", scores: { attractT: 2, awkwardness: 2, loveExpression: 1, caretakerDependency: 1, lowTempEmotion: 0.5, silenceDependency: 0.5 } },
+      { id: "208a", text: "黙って先に払って何も言わない", scores: { attractF: 2, awkwardness: 3, loveExpression: 2, caretakerDependency: 1, lowTempEmotion: 0.5, silenceDependency: 0.5 } },
       { id: "208b", text: "「次は奢ってね」と笑って払う", scores: { attractF: 2, vibeMatch: 2, humanity: 1, lineTemperature: 1, innocenceTolerance: 0.5, distanceSense: 0.5 } },
       { id: "208c", text: "サッと割り勘を提案してくれる", scores: { attractT: 3, attractS: 1, urbanSense: 1, distanceSense: 1, independence: 1, lowTempEmotion: 0.5 } },
       { id: "208d", text: "「ここ前から来たかった」と楽しそう", scores: { attractS: 2, dailyLifeFeel: 1, innocenceTolerance: 2, humanity: 1, vibeMatch: 0.5, loveExpression: 0.5 } },
@@ -184,7 +184,7 @@ const phase2EP: readonly Question[] = [
     choices: [
       { id: "211a", text: "「今近くにいる、出てこれる？」", scores: { attractS: 3, dailyLifeFeel: 1, vibeMatch: 1, edginessTolerance: 1, lineTemperature: 0.5, distanceSense: 0.5 } },
       { id: "211b", text: "「朝焼け見に行かない？」", scores: { attractN: 3, lateNightVibe: 2, edginessTolerance: 1, urbanSense: 1, innocenceTolerance: 0.5, understandDesire: 0.5 } },
-      { id: "211c", text: "「お腹空いた、付き合って」", scores: { attractS: 2, attractF: 1, caretakerDependency: 1, innocenceTolerance: 1, dailyLifeFeel: 1, humanity: 0.5 } },
+      { id: "211c", text: "「30分で着く、駅で待ち合わせ」と即決", scores: { attractT: 3, attractS: 1, independence: 2, urbanSense: 1, lowTempEmotion: 0.5, distanceSense: 0.5 } },
       { id: "211d", text: "「声聞きたくなった」とだけ", scores: { attractF: 3, lineTemperature: 2, emotionalInstabilityTolerance: 1, loveExpression: 1, lateNightVibe: 0.5, awkwardness: 0.5 } },
     ],
   },
@@ -268,8 +268,8 @@ const phase2IJ: readonly Question[] = [
     choices: [
       { id: "221a", text: "考え事してるのが背中で伝わる", scores: { attractT: 2, attractN: 1, understandDesire: 2, silenceDependency: 1, lowTempEmotion: 1, distanceSense: 0.5 } },
       { id: "221b", text: "安心して目を閉じてる", scores: { attractF: 3, silenceDependency: 3, humanity: 1, dailyLifeFeel: 0.5, loveExpression: 0.5, innocenceTolerance: 0.5 } },
-      { id: "221c", text: "本のページをめくる音だけ聞こえる", scores: { attractS: 2, attractI: 1, dailyLifeFeel: 1, lowTempEmotion: 1, silenceDependency: 1, urbanSense: 0.5 } },
-      { id: "221d", text: "何か言いたそうに口を開きかける", scores: { attractF: 2, attractN: 1, awkwardness: 3, understandDesire: 1, emotionalInstabilityTolerance: 0.5, saveDesire: 0.5 } },
+      { id: "221c", text: "メモを取る手の音だけ聞こえる", scores: { attractS: 3, attractT: 1, independence: 2, urbanSense: 1, lowTempEmotion: 0.5, dailyLifeFeel: 0.5 } },
+      { id: "221d", text: "何か言いたそうに口を開きかける", scores: { attractF: 2, attractN: 3, awkwardness: 2, understandDesire: 2, emotionalInstabilityTolerance: 0.5, saveDesire: 0.5 } },
     ],
   },
   {
@@ -449,13 +449,13 @@ const phase3NF: readonly Question[] = [
     choices: [
       { id: "301a", text: "自分にだけ見せる横顔があるとき", scores: { understandDesire: 3, loveExpression: 2, distanceSense: 1, lowTempEmotion: 1, silenceDependency: 0.5, awkwardness: 0.5 } },
       { id: "301b", text: "前話した小さい話を覚えてくれてたとき", scores: { caretakerDependency: 2, humanity: 2, understandDesire: 1, loveExpression: 1, dailyLifeFeel: 0.5, lineTemperature: 0.5 } },
-      { id: "301c", text: "普段笑わない人がふっと笑ったとき", scores: { awkwardness: 2, lowTempEmotion: 2, saveDesire: 2, innocenceTolerance: 1, understandDesire: 0.5, distanceSense: 0.5 } },
+      { id: "301c", text: "他人にはクールなのに目を見て話してくれた時", scores: { distanceSense: 3, lowTempEmotion: 2, awkwardness: 1, innocenceTolerance: 1, understandDesire: 0.5, neglectTolerance: 0.5 } },
       { id: "301d", text: "「いてくれてよかった」と言われたとき", scores: { loveExpression: 3, lineTemperature: 2, humanity: 1, caretakerDependency: 1, saveDesire: 0.5, understandDesire: 0.5 } },
     ],
   },
   {
     id: 302,
-    text: "「この人、本心が見えないな」\nと感じる瞬間は？",
+    text: "「もっと深く知りたい」と\n感じる相手の瞬間は？",
     choices: [
       { id: "302a", text: "何も言わずにいつも通り笑ってるとき", scores: { understandDesire: 3, lowTempEmotion: 2, awkwardness: 1, silenceDependency: 1, distanceSense: 0.5, saveDesire: 0.5 } },
       { id: "302b", text: "返信が急にそっけなくなったとき", scores: { distanceSense: 2, lineTemperature: 2, neglectTolerance: 2, emotionalInstabilityTolerance: 1, edginessTolerance: 0.5, awkwardness: 0.5 } },
@@ -515,12 +515,12 @@ const phase3NF: readonly Question[] = [
   },
   {
     id: 308,
-    text: "「冷めてしまうかも」と\n思う相手の瞬間は？",
+    text: "「もっと知りたい」と\n思える相手の特徴は？",
     choices: [
-      { id: "308a", text: "こっちのこと全然わかってないと気づいた時", scores: { understandDesire: 3, distanceSense: 1, humanity: 1, loveExpression: 1, lineTemperature: 0.5, emotionalInstabilityTolerance: 0.5 } },
-      { id: "308b", text: "自分がいなくても平気そうな時", scores: { saveDesire: 2, neglectTolerance: 2, lineTemperature: 1, loveExpression: 1, caretakerDependency: 0.5, emotionalInstabilityTolerance: 0.5 } },
-      { id: "308c", text: "前と雰囲気が変わってしまった時", scores: { lowTempEmotion: 1, humanity: 1, edginessTolerance: 2, understandDesire: 1, distanceSense: 0.5, dailyLifeFeel: 0.5 } },
-      { id: "308d", text: "気持ちを全然言葉にしてくれない時", scores: { loveExpression: 3, lineTemperature: 2, conversationDensity: 1, awkwardness: 1, understandDesire: 0.5, emotionalInstabilityTolerance: 0.5 } },
+      { id: "308a", text: "自分のことをちゃんと理解してくれる", scores: { understandDesire: 3, humanity: 1, loveExpression: 1, lineTemperature: 1, distanceSense: 0.5, caretakerDependency: 0.5 } },
+      { id: "308b", text: "自分を必要としてくれる", scores: { saveDesire: 2, loveExpression: 2, caretakerDependency: 2, lineTemperature: 1, humanity: 0.5, emotionalInstabilityTolerance: 0.5 } },
+      { id: "308c", text: "変わらない芯がある", scores: { lowTempEmotion: 2, independence: 2, edginessTolerance: 1, understandDesire: 1, distanceSense: 0.5, dailyLifeFeel: 0.5 } },
+      { id: "308d", text: "気持ちをちゃんと言葉にしてくれる", scores: { loveExpression: 3, lineTemperature: 2, conversationDensity: 2, humanity: 1, understandDesire: 0.5, awkwardness: 0.5 } },
     ],
   },
 ]
@@ -562,7 +562,7 @@ const phase3NT: readonly Question[] = [
     text: "「この人賢い」と思う瞬間、\n惹かれるのは？",
     choices: [
       { id: "314a", text: "一つのことに集中して時間を忘れてる", scores: { independence: 3, lowTempEmotion: 2, silenceDependency: 1, understandDesire: 1, dailyLifeFeel: 0.5, awkwardness: 0.5 } },
-      { id: "314b", text: "予想外の角度から意見を出してくる", scores: { edginessTolerance: 2, vibeMatch: 1, innocenceTolerance: 2, conversationDensity: 1, independence: 0.5, understandDesire: 0.5 } },
+      { id: "314b", text: "予想外の角度から意見を出してくる", scores: { edginessTolerance: 2, vibeMatch: 1, innocenceTolerance: 2, conversationDensity: 1, emotionalInstabilityTolerance: 0.5, understandDesire: 0.5 } },
       { id: "314c", text: "初めてのことをすぐ理解する", scores: { independence: 2, urbanSense: 2, distanceSense: 1, lowTempEmotion: 1, understandDesire: 0.5, edginessTolerance: 0.5 } },
       { id: "314d", text: "周りに合わせないけど結果を出す", scores: { edginessTolerance: 3, saveDesire: 2, independence: 1, lowTempEmotion: 1, distanceSense: 0.5, neglectTolerance: 0.5 } },
     ],
@@ -583,7 +583,7 @@ const phase3NT: readonly Question[] = [
     choices: [
       { id: "316a", text: "言葉は少ないけど行動で全部出す", scores: { lowTempEmotion: 3, neglectTolerance: 1, loveExpression: 1, caretakerDependency: 1, awkwardness: 0.5, silenceDependency: 0.5 } },
       { id: "316b", text: "たまに一言だけぼそっと言う", scores: { lowTempEmotion: 2, awkwardness: 3, loveExpression: 1, understandDesire: 1, distanceSense: 0.5, silenceDependency: 0.5 } },
-      { id: "316c", text: "年に一回くらい刺さる事を言う", scores: { understandDesire: 2, loveExpression: 1, lineTemperature: 1, lowTempEmotion: 1, distanceSense: 0.5, awkwardness: 0.5 } },
+      { id: "316c", text: "普段無口なのに他人を褒める時だけ饒舌", scores: { humanity: 3, conversationDensity: 2, understandDesire: 1, vibeMatch: 1, awkwardness: 0.5, loveExpression: 0.5 } },
       { id: "316d", text: "表現が下手で照れて避けてる", scores: { awkwardness: 3, innocenceTolerance: 2, saveDesire: 1, humanity: 1, understandDesire: 0.5, loveExpression: 0.5 } },
     ],
   },
@@ -722,7 +722,7 @@ const phase3ST: readonly Question[] = [
       { id: "333a", text: "生活がちゃんと回ってる人だと気づいた時", scores: { independence: 3, dailyLifeFeel: 2, lowTempEmotion: 1, urbanSense: 1, caretakerDependency: 0.5, humanity: 0.5 } },
       { id: "333b", text: "感情の波が少なくて穏やかな時", scores: { lowTempEmotion: 3, emotionalInstabilityTolerance: 1, silenceDependency: 1, distanceSense: 1, dailyLifeFeel: 0.5, independence: 0.5 } },
       { id: "333c", text: "小さい約束をちゃんと覚えてた時", scores: { dailyLifeFeel: 2, humanity: 2, understandDesire: 1, loveExpression: 1, lineTemperature: 0.5, caretakerDependency: 0.5 } },
-      { id: "333d", text: "トラブル中も表情が変わらなかった時", scores: { lowTempEmotion: 3, independence: 2, distanceSense: 1, edginessTolerance: 1, urbanSense: 0.5, silenceDependency: 0.5 } },
+      { id: "333d", text: "困った時もユーモアを忘れない時", scores: { vibeMatch: 3, innocenceTolerance: 2, humanity: 1, conversationDensity: 1, edginessTolerance: 0.5, independence: 0.5 } },
     ],
   },
   {
