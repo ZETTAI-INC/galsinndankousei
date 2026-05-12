@@ -141,7 +141,7 @@ export default function ResultPage() {
 
           {/* Display name - large serif */}
           <h1
-            className="title-editorial animate-blur-in mb-4 text-[34px] sm:text-[40px]"
+            className="title-editorial animate-blur-in mb-4 text-[28px] sm:text-[40px]"
             style={{ animationDelay: "0.5s" }}
           >
             {result.displayName}
@@ -479,7 +479,7 @@ export default function ResultPage() {
               </Link>
             </div>
 
-            <p className="serif mb-6 text-[12px] font-light tracking-wide text-white/50">
+              <p className="serif mb-6 text-[12px] font-light tracking-wide text-white/50">
               友達にもやらせよ
             </p>
 
@@ -506,10 +506,10 @@ export default function ResultPage() {
               </button>
             </div>
 
-            <div className="mt-12 flex flex-col items-center gap-4">
+            <div className="mt-12 flex flex-col items-center gap-2">
               <Link
                 href="/mypage"
-                className="text-[11px] tracking-[0.3em] text-[var(--accent)]/70 transition-colors hover:text-[var(--accent)]"
+                className="inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-[var(--accent)]/70 transition-colors hover:text-[var(--accent)]"
               >
                 診断シートを見る
               </Link>
@@ -520,13 +520,13 @@ export default function ResultPage() {
                   localStorage.removeItem("attraction-result-cache")
                   window.location.href = "/diagnosis"
                 }}
-                className="text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+                className="inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
               >
                 ↻ この診断をやり直す
               </button>
               <Link
                 href="/"
-                className="text-[11px] tracking-[0.3em] text-white/25 transition-colors hover:text-[var(--accent)]"
+                className="inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/25 transition-colors hover:text-[var(--accent)]"
               >
                 トップに戻る
               </Link>

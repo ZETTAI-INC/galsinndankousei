@@ -172,22 +172,22 @@ export default function DiagnosisPage() {
   // Gender selection / pre-diagnosis
   if (stage === "gender") {
     return (
-      <div className="flex min-h-dvh flex-col items-center justify-center px-8">
+      <div className="flex min-h-dvh flex-col items-center justify-center px-6 sm:px-8">
         <div className="animate-fade-in-up flex flex-col items-center">
           <span className="heading-eyebrow mb-10">01</span>
-          <p className="serif mb-16 text-[24px] font-light tracking-wide text-white/95">
+          <p className="serif mb-12 text-[22px] font-light tracking-wide text-white/95 sm:mb-16 sm:text-[24px]">
             あなたの性別は？
           </p>
           <div className="flex gap-3">
             <button
               onClick={() => handleGender("male")}
-              className="btn-secondary"
+              className="btn-secondary min-h-[44px]"
             >
               男性
             </button>
             <button
               onClick={() => handleGender("female")}
-              className="btn-secondary"
+              className="btn-secondary min-h-[44px]"
             >
               女性
             </button>
@@ -200,7 +200,7 @@ export default function DiagnosisPage() {
   // Intro - 質問の前置き
   if (stage === "intro") {
     return (
-      <div className="flex min-h-dvh flex-col items-center justify-center px-8 py-16">
+      <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-12 sm:px-8 sm:py-16">
         <div className="animate-fade-in-up flex max-w-md flex-col items-center text-center">
           <span className="heading-eyebrow mb-10">02</span>
 
@@ -208,7 +208,7 @@ export default function DiagnosisPage() {
             ここから24問
           </p>
 
-          <h2 className="title-editorial mb-8 text-[28px] sm:text-[34px]">
+          <h2 className="title-editorial mb-8 text-[26px] sm:text-[34px]">
             <em>気になる人</em>
             <br />
             について答えて
@@ -264,11 +264,11 @@ export default function DiagnosisPage() {
             あなたが惹かれる人について答えてね
           </span>
         </div>
-        <div className="flex items-center justify-between px-6 py-3">
+        <div className="flex items-center justify-between px-4 py-2 sm:px-6 sm:py-3">
         {totalAnswered > 0 ? (
           <button
             onClick={handleBack}
-            className="group flex items-center gap-2 text-[12px] tracking-[0.15em] text-white/60 transition-colors hover:text-[var(--accent)]"
+            className="group flex min-h-[44px] items-center gap-2 px-2 text-[12px] tracking-[0.15em] text-white/60 transition-colors hover:text-[var(--accent)]"
           >
             <span className="inline-block transition-transform group-hover:-translate-x-1">←</span>
             <span>1問戻る</span>
@@ -284,9 +284,9 @@ export default function DiagnosisPage() {
       </div>
 
       {/* Question */}
-      <div className="w-full max-w-lg pt-24" key={animKey}>
+      <div className="w-full max-w-lg pt-28 sm:pt-24" key={animKey}>
         <div className="animate-fade-in-up flex flex-col items-center">
-          <p className="serif mb-16 whitespace-pre-line text-center text-[24px] font-light leading-[1.8] tracking-[0.02em] text-white">
+          <p className="serif mb-12 whitespace-pre-line text-center text-[19px] font-light leading-[1.7] tracking-[0.02em] text-white sm:mb-16 sm:text-[24px] sm:leading-[1.8]">
             {currentQuestion.text}
           </p>
 

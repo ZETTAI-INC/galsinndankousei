@@ -68,7 +68,7 @@ export default function MatchOtherPage() {
 
           {/* Other person's MBTI - editorial */}
           <h1
-            className="title-editorial animate-blur-in mb-3 text-[44px] sm:text-[52px]"
+            className="title-editorial animate-blur-in mb-3 text-[40px] sm:text-[52px]"
             style={{ animationDelay: "0.4s" }}
           >
             {result.otherMbti}
@@ -94,16 +94,16 @@ export default function MatchOtherPage() {
               あなたの好みとの一致
             </p>
             <div className="flex items-baseline justify-center gap-2">
-              <span className="serif text-[80px] font-light leading-none text-[var(--accent)]">
+              <span className="serif text-[64px] font-light leading-none text-[var(--accent)] sm:text-[80px]">
                 {result.matchPercent}
               </span>
-              <span className="serif text-[20px] tracking-[0.1em] text-white/50">%</span>
+              <span className="serif text-[18px] tracking-[0.1em] text-white/50 sm:text-[20px]">%</span>
             </div>
           </div>
 
           {/* Verdict */}
           <p
-            className="serif animate-fade-in mt-6 text-[20px] font-light tracking-wide text-white/95"
+            className="serif animate-fade-in mt-6 text-[18px] font-light tracking-wide text-white/95 sm:text-[20px]"
             style={{ animationDelay: "2.0s" }}
           >
             <em className="not-italic text-[var(--accent)]">{result.matchVerdict}</em>
@@ -148,9 +148,10 @@ export default function MatchOtherPage() {
             あなたの理想と、{otherName}の実態
           </p>
 
-          <div className="space-y-12">
+          <div className="space-y-12 px-4 sm:px-0">
             {result.axisCompare.map((axis) => {
               const [leftCode, leftLabel, , rightLabel, rightCode] = axis.label.split(" ")
+              const clamp = (v: number) => Math.max(8, Math.min(92, v))
               return (
                 <div key={axis.label}>
                   <div className="mb-4 flex items-baseline justify-between text-[12px] tracking-wider">
@@ -167,7 +168,7 @@ export default function MatchOtherPage() {
                     <div
                       className="absolute z-10"
                       style={{
-                        left: `${axis.attraction}%`,
+                        left: `${clamp(axis.attraction)}%`,
                         top: "-22px",
                         transform: "translateX(-50%)",
                       }}
@@ -182,14 +183,14 @@ export default function MatchOtherPage() {
                     <div
                       className="absolute z-10"
                       style={{
-                        left: `${axis.other}%`,
+                        left: `${clamp(axis.other)}%`,
                         top: "0",
                         transform: "translateX(-50%)",
                       }}
                     >
                       <div className="flex flex-col items-center">
                         <span className="text-[var(--accent)] text-[10px] leading-none">▲</span>
-                        <span className="serif text-[10px] tracking-wide text-[var(--accent)] whitespace-nowrap mt-1">
+                        <span className="serif max-w-[90px] truncate text-[10px] tracking-wide text-[var(--accent)] mt-1">
                           {otherName}
                         </span>
                       </div>
@@ -245,7 +246,7 @@ export default function MatchOtherPage() {
 
             <Link
               href="/"
-              className="mt-8 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+              className="mt-8 inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
             >
               トップに戻る
             </Link>

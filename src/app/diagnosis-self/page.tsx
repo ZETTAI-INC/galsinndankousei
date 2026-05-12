@@ -66,11 +66,11 @@ export default function DiagnosisSelfPage() {
       </div>
 
       {/* Header bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-white/5 bg-[#0a0810]/80 px-6 py-4 backdrop-blur-xl">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-white/5 bg-[#0a0810]/80 px-4 py-2 backdrop-blur-xl sm:px-6 sm:py-4">
         {currentIndex > 0 ? (
           <button
             onClick={handleBack}
-            className="group flex items-center gap-2 text-[12px] tracking-[0.15em] text-white/60 transition-colors hover:text-[var(--accent)]"
+            className="group flex min-h-[44px] items-center gap-2 px-2 text-[12px] tracking-[0.15em] text-white/60 transition-colors hover:text-[var(--accent)]"
           >
             <span className="inline-block transition-transform group-hover:-translate-x-1">←</span>
             <span>1問戻る</span>
@@ -85,9 +85,9 @@ export default function DiagnosisSelfPage() {
       </div>
 
       {/* Question */}
-      <div className="w-full max-w-lg pt-16" key={animKey}>
+      <div className="w-full max-w-lg pt-20 sm:pt-16" key={animKey}>
         <div className="animate-fade-in-up flex flex-col items-center">
-          <p className="serif mb-16 whitespace-pre-line text-center text-[24px] font-light leading-[1.8] tracking-[0.02em] text-white">
+          <p className="serif mb-12 whitespace-pre-line text-center text-[19px] font-light leading-[1.7] tracking-[0.02em] text-white sm:mb-16 sm:text-[24px] sm:leading-[1.8]">
             {question.text}
           </p>
 

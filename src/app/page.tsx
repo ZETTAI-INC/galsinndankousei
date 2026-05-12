@@ -4,11 +4,11 @@ import Link from "next/link"
 
 export default function TopPage() {
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center px-8 py-20">
+    <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-16 sm:px-8 sm:py-20">
       <div className="w-full max-w-md text-center">
         {/* Eyebrow */}
         <div
-          className="animate-fade-in mb-12"
+          className="animate-fade-in mb-10 sm:mb-12"
           style={{ animationDelay: "0.3s" }}
         >
           <span className="heading-eyebrow">恋愛MBTI診断</span>
@@ -16,7 +16,7 @@ export default function TopPage() {
 
         {/* Hero title */}
         <h1
-          className="title-editorial animate-blur-in mb-12 text-[42px] sm:text-[48px]"
+          className="title-editorial animate-blur-in mb-10 text-[38px] sm:mb-12 sm:text-[48px]"
           style={{ animationDelay: "0.6s" }}
         >
           あなたが

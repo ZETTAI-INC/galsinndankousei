@@ -229,7 +229,7 @@ export default function MyPage() {
 
               <button
                 onClick={handleReset}
-                className="mt-8 text-[10px] tracking-[0.3em] text-white/25 transition-colors hover:text-[var(--accent)]/60"
+                className="mt-8 min-h-[44px] px-3 py-2 text-[11px] tracking-[0.3em] text-white/25 transition-colors hover:text-[var(--accent)]/60"
               >
                 すべてリセット
               </button>
@@ -254,7 +254,7 @@ export default function MyPage() {
         <div className="mt-16 text-center">
           <Link
             href="/"
-            className="text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+            className="inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
           >
             トップに戻る
           </Link>
@@ -353,7 +353,7 @@ function StampCard({ stamp, index }: { stamp: StampStatus; index: number }) {
       {stamp.completed && stamp.resetKeys && (
         <button
           onClick={handleRetake}
-          className="block w-full border-t border-white/8 py-3 text-[10px] tracking-[0.25em] text-white/30 transition-colors hover:bg-[var(--accent)]/5 hover:text-[var(--accent)]"
+          className="block min-h-[44px] w-full border-t border-white/8 px-4 py-3 text-[11px] tracking-[0.25em] text-white/30 transition-colors hover:bg-[var(--accent)]/5 hover:text-[var(--accent)]"
         >
           ↻ やり直す
         </button>

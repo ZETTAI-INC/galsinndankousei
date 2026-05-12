@@ -83,7 +83,7 @@ function MatchWithContent() {
             <div className="animate-fade-in mb-10">
               <span className="heading-eyebrow">相性偏差値</span>
             </div>
-            <h1 className="title-editorial animate-blur-in mb-8 text-[34px] sm:text-[40px]">
+            <h1 className="title-editorial animate-blur-in mb-8 text-[30px] sm:text-[40px]">
               相手のコードで
               <br />
               <em>相性を見る</em>
@@ -146,7 +146,7 @@ function MatchWithContent() {
           <div className="mt-12 text-center">
             <Link
               href="/mypage"
-              className="text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+              className="inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
             >
               マイページに戻る
             </Link>
@@ -167,7 +167,7 @@ function MatchWithContent() {
           </div>
 
           {/* Verdict */}
-          <h1 className="title-editorial animate-blur-in mb-6 text-[34px] sm:text-[40px]">
+          <h1 className="title-editorial animate-blur-in mb-6 text-[28px] sm:text-[40px]">
             <em>{result.verdict}</em>
           </h1>
 
@@ -184,7 +184,7 @@ function MatchWithContent() {
               相性偏差値
             </p>
             <div className="flex items-baseline justify-center gap-2">
-              <span className="serif text-[88px] font-light leading-none text-[var(--accent)]">
+              <span className="serif text-[68px] font-light leading-none text-[var(--accent)] sm:text-[88px]">
                 {result.deviation}
               </span>
             </div>
@@ -384,7 +384,7 @@ function MatchWithContent() {
             </button>
             <Link
               href="/mypage"
-              className="mt-8 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+              className="mt-8 inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
             >
               マイページに戻る
             </Link>

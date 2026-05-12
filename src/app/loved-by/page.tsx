@@ -174,7 +174,7 @@ export default function LovedByPage() {
 
             <Link
               href="/"
-              className="mt-8 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+              className="mt-8 inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
             >
               トップに戻る
             </Link>

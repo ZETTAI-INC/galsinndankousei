@@ -94,10 +94,10 @@ export default function MatchPage() {
           <div className="animate-scale-in mb-8" style={{ animationDelay: "0.4s" }}>
             <p className="mb-4 text-[10px] tracking-[0.4em] text-white/40">MATCH</p>
             <div className="flex items-baseline justify-center gap-2">
-              <span className="serif text-[80px] font-light leading-none text-[var(--accent)]">
+              <span className="serif text-[64px] font-light leading-none text-[var(--accent)] sm:text-[80px]">
                 {match.matchPercent}
               </span>
-              <span className="serif text-[20px] tracking-[0.1em] text-white/50">%</span>
+              <span className="serif text-[18px] tracking-[0.1em] text-white/50 sm:text-[20px]">%</span>
             </div>
           </div>
 
@@ -106,7 +106,7 @@ export default function MatchPage() {
             className="animate-fade-in-up mb-6"
             style={{ animationDelay: "1.0s" }}
           >
-            <h1 className="title-editorial mb-2 text-[28px] sm:text-[32px]">
+            <h1 className="title-editorial mb-2 text-[24px] sm:text-[32px]">
               <em>{match.matchType}</em>
             </h1>
             <p className="serif text-[13px] tracking-wide text-white/60">
@@ -116,24 +116,24 @@ export default function MatchPage() {
 
           {/* MBTI vs MBTI */}
           <div
-            className="animate-fade-in mt-12 flex items-center justify-center gap-6"
+            className="animate-fade-in mt-12 flex items-center justify-center gap-3 sm:gap-6"
             style={{ animationDelay: "1.4s" }}
           >
             <div className="text-center">
               <p className="mb-2 text-[10px] tracking-[0.3em] text-white/40">YOU</p>
-              <p className="serif text-[20px] tracking-[0.2em] text-white/85">
+              <p className="serif text-[18px] tracking-[0.15em] text-white/85 sm:text-[20px] sm:tracking-[0.2em]">
                 {match.selfMbti}
               </p>
               <p className="serif mt-1 text-[10px] tracking-wide text-white/40">
                 {self.selfLabel}
               </p>
             </div>
-            <div className="text-[24px] text-[var(--accent)]/60">×</div>
+            <div className="text-[20px] text-[var(--accent)]/60 sm:text-[24px]">×</div>
             <div className="text-center">
               <p className="mb-2 text-[10px] tracking-[0.3em] text-[var(--accent)]/70">
                 ATTRACTION
               </p>
-              <p className="serif text-[20px] tracking-[0.2em] text-[var(--accent)]">
+              <p className="serif text-[18px] tracking-[0.15em] text-[var(--accent)] sm:text-[20px] sm:tracking-[0.2em]">
                 {match.attractionMbti}
               </p>
               <p className="serif mt-1 text-[10px] tracking-wide text-white/40">
@@ -160,9 +160,10 @@ export default function MatchPage() {
             あなた自身 と、あなたが惹かれる相手
           </p>
 
-          <div className="space-y-12">
+          <div className="space-y-12 px-4 sm:px-0">
             {match.axisCompare.map((axis) => {
               const [leftCode, leftLabel, , rightLabel, rightCode] = axis.label.split(" ")
+              const clamp = (v: number) => Math.max(8, Math.min(92, v))
               return (
                 <div key={axis.label}>
                   <div className="mb-4 flex items-baseline justify-between text-[12px] tracking-wider">
@@ -180,7 +181,7 @@ export default function MatchPage() {
                     <div
                       className="absolute z-10"
                       style={{
-                        left: `${axis.self}%`,
+                        left: `${clamp(axis.self)}%`,
                         top: "-22px",
                         transform: "translateX(-50%)",
                       }}
@@ -196,7 +197,7 @@ export default function MatchPage() {
                     <div
                       className="absolute z-10"
                       style={{
-                        left: `${axis.attraction}%`,
+                        left: `${clamp(axis.attraction)}%`,
                         top: "0",
                         transform: "translateX(-50%)",
                       }}
@@ -319,13 +320,13 @@ export default function MatchPage() {
                 localStorage.removeItem("self-scores")
                 window.location.href = "/diagnosis-self"
               }}
-              className="mt-4 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
+              className="mt-4 inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/30 transition-colors hover:text-[var(--accent)]"
             >
               ↻ 自己診断をやり直す
             </button>
             <Link
               href="/"
-              className="text-[11px] tracking-[0.3em] text-white/25 transition-colors hover:text-[var(--accent)]"
+              className="inline-flex min-h-[44px] items-center px-3 py-2 text-[11px] tracking-[0.3em] text-white/25 transition-colors hover:text-[var(--accent)]"
             >
               トップに戻る
             </Link>
