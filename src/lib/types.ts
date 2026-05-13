@@ -180,6 +180,19 @@ export interface ContradictionData {
   readonly summary: string
 }
 
+export interface RarityHighlightData {
+  readonly axis: string // e.g., "lowTempEmotion"
+  readonly label: string // e.g., "低温感情"
+  readonly topPercent: number // 1..99（小さいほど希少）
+  readonly direction: "high" | "low" // 高い側で珍しいか、低い側で珍しいか
+}
+
+export interface PredictionData {
+  readonly id: string
+  readonly text: string
+  readonly category: string
+}
+
 export interface AnalysisResult {
   readonly displayName: string
   readonly displayType: string // top MBTI like "INFP"
@@ -195,4 +208,6 @@ export interface AnalysisResult {
   readonly microTraits: readonly string[]
   readonly mbtiRanking: readonly MbtiAttraction[]
   readonly contradictions?: readonly ContradictionData[]
+  readonly rarityHighlights?: readonly RarityHighlightData[]
+  readonly predictions?: readonly PredictionData[]
 }

@@ -199,6 +199,44 @@ export default function ResultPage() {
             </p>
             <RadarChart data={result.axisChart} size={280} />
           </div>
+
+          {/* Rarity highlights - z-score上位3軸を「上位X%」表示 */}
+          {result.rarityHighlights && result.rarityHighlights.length > 0 && (
+            <div
+              className="animate-fade-in mt-12"
+              style={{ animationDelay: "2.3s" }}
+            >
+              <p className="mb-5 text-[10px] tracking-[0.3em] text-white/45">
+                あなたの最希少ポイント
+              </p>
+              <div className="flex flex-col gap-3">
+                {result.rarityHighlights.map((h) => (
+                  <div
+                    key={h.axis}
+                    className="flex items-baseline justify-between border-b border-white/10 pb-3"
+                  >
+                    <span className="serif text-[14px] tracking-wide text-white/85">
+                      {h.label}
+                    </span>
+                    <span className="flex items-baseline gap-1.5">
+                      <span className="text-[10px] text-white/40">
+                        {h.direction === "high" ? "上位" : "下位"}
+                      </span>
+                      <span className="serif text-[20px] font-light text-[var(--accent)]">
+                        {h.direction === "high"
+                          ? h.topPercent
+                          : 100 - h.topPercent}
+                      </span>
+                      <span className="text-[10px] text-white/40">%</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-[9px] tracking-wide text-white/25">
+                ※ 過去の診断データを基にした理論上の希少度
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Core Analysis */}
@@ -313,6 +351,35 @@ export default function ResultPage() {
                     {/* Text */}
                     <p className="serif text-[13px] font-light leading-[2.1] tracking-wide text-white/85">
                       {c.text}
+                    </p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Cross-axis predictions - 「答えてないのに当たる」 */}
+        {result.predictions && result.predictions.length > 0 && (
+          <section className="mb-20">
+            <ScrollReveal>
+              <p className="mb-6">
+                <span className="heading-eyebrow">聞いてないのに当たること</span>
+              </p>
+              <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
+                たぶん、<span className="highlight-pink">これ全部やってる。</span>
+              </p>
+            </ScrollReveal>
+
+            <div className="flex flex-col gap-4">
+              {result.predictions.map((p, i) => (
+                <ScrollReveal key={p.id} delay={i * 150}>
+                  <div
+                    className="border-l-2 border-[var(--accent)]/40 px-5 py-4"
+                    style={{ background: "rgba(212, 165, 184, 0.03)" }}
+                  >
+                    <p className="serif text-[14px] font-light leading-[2.0] tracking-[0.02em] text-white/85">
+                      {p.text}
                     </p>
                   </div>
                 </ScrollReveal>

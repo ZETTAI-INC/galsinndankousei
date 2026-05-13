@@ -1,4 +1,5 @@
 import type { AnalysisScores, Phase1Type, Phase3Type, Question } from "./types"
+import { zScore } from "./calibration"
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Phase 1: コア8問
@@ -9,10 +10,10 @@ export const phase1Questions: readonly Question[] = [
     id: 1,
     text: "気になる相手の写真フォルダ、\n何が多そう？",
     choices: [
-      { id: "1a", text: "空や夕焼けばっかり", scores: { attractI: 3, lateNightVibe: 2, lowTempEmotion: 1, urbanSense: 1, silenceDependency: 1, understandDesire: 0.5 } },
+      { id: "1a", text: "空や夕焼けばっかり", scores: { attractI: 3, attractN: 1.5, lateNightVibe: 2, lowTempEmotion: 1, urbanSense: 1, silenceDependency: 1, understandDesire: 0.5 } },
       { id: "1b", text: "友達と撮った集合写真", scores: { attractE: 3, humanity: 2, vibeMatch: 1, dailyLifeFeel: 1, innocenceTolerance: 0.5, lineTemperature: 0.5 } },
       { id: "1c", text: "食べ物と手元のクローズアップ", scores: { attractS: 2, dailyLifeFeel: 2, caretakerDependency: 1, humanity: 1, innocenceTolerance: 0.5, understandDesire: 0.5 } },
-      { id: "1d", text: "知らない街の路地ばっかり", scores: { attractI: 2, urbanSense: 2, independence: 1, lateNightVibe: 1, edginessTolerance: 0.5, lowTempEmotion: 0.5 } },
+      { id: "1d", text: "知らない街の路地ばっかり", scores: { attractI: 2, attractN: 1, urbanSense: 2, independence: 1, lateNightVibe: 1, edginessTolerance: 0.5, lowTempEmotion: 0.5 } },
     ],
   },
   {
@@ -49,9 +50,9 @@ export const phase1Questions: readonly Question[] = [
     id: 5,
     text: "電車を待ってる時の\n姿勢、惹かれるのは？",
     choices: [
-      { id: "5a", text: "壁にもたれてスマホ見てる", scores: { attractI: 2, lowTempEmotion: 2, lateNightVibe: 1, distanceSense: 1, urbanSense: 0.5, edginessTolerance: 0.5 } },
+      { id: "5a", text: "壁にもたれてスマホ見てる", scores: { attractI: 2, attractP: 2, lowTempEmotion: 2, lateNightVibe: 1, distanceSense: 1, urbanSense: 0.5, edginessTolerance: 0.5 } },
       { id: "5b", text: "イヤホンしながら本を読んでる", scores: { attractI: 3, silenceDependency: 2, urbanSense: 1, independence: 1, understandDesire: 0.5, lowTempEmotion: 0.5 } },
-      { id: "5c", text: "電話で楽しそうに話してる", scores: { attractE: 3, vibeMatch: 2, lineTemperature: 1, humanity: 1, conversationDensity: 0.5, innocenceTolerance: 0.5 } },
+      { id: "5c", text: "電話で楽しそうに話してる", scores: { attractE: 3, attractP: 1, vibeMatch: 2, lineTemperature: 1, humanity: 1, conversationDensity: 0.5, innocenceTolerance: 0.5 } },
       { id: "5d", text: "目的のとこへ迷わず歩いてる", scores: { attractJ: 3, independence: 2, urbanSense: 1, lowTempEmotion: 1, distanceSense: 0.5, dailyLifeFeel: 0.5 } },
     ],
   },
@@ -168,10 +169,10 @@ const phase2EJ: readonly Question[] = [
     id: 208,
     text: "会計の時の振る舞い、\n惹かれるのは？",
     choices: [
-      { id: "208a", text: "黙って先に払って何も言わない", scores: { attractF: 2, awkwardness: 3, loveExpression: 2, caretakerDependency: 1, lowTempEmotion: 0.5, silenceDependency: 0.5 } },
+      { id: "208a", text: "黙って先に払って何も言わない", scores: { attractF: 2, attractN: 1, awkwardness: 3, loveExpression: 2, caretakerDependency: 1, lowTempEmotion: 0.5, silenceDependency: 0.5 } },
       { id: "208b", text: "「次は奢ってね」と笑って払う", scores: { attractF: 2, vibeMatch: 2, humanity: 1, lineTemperature: 1, innocenceTolerance: 0.5, distanceSense: 0.5 } },
       { id: "208c", text: "サッと割り勘を提案してくれる", scores: { attractT: 3, attractS: 1, urbanSense: 1, distanceSense: 1, independence: 1, lowTempEmotion: 0.5 } },
-      { id: "208d", text: "「ここ前から来たかった」と楽しそう", scores: { attractS: 2, dailyLifeFeel: 1, innocenceTolerance: 2, humanity: 1, vibeMatch: 0.5, loveExpression: 0.5 } },
+      { id: "208d", text: "「ここ前から来たかった」と楽しそう", scores: { attractS: 2, attractN: 0.5, dailyLifeFeel: 1, innocenceTolerance: 2, humanity: 1, vibeMatch: 0.5, loveExpression: 0.5 } },
     ],
   },
 ]
@@ -276,10 +277,10 @@ const phase2IJ: readonly Question[] = [
     id: 222,
     text: "好きな話題の話し方、\n惹かれるのは？",
     choices: [
-      { id: "222a", text: "同じテーマを何時間も深掘りする", scores: { attractS: 3, independence: 2, understandDesire: 1, conversationDensity: 1, silenceDependency: 0.5, lowTempEmotion: 0.5 } },
-      { id: "222b", text: "話題が次々飛んでいく", scores: { attractN: 3, conversationDensity: 1, edginessTolerance: 1, vibeMatch: 1, innocenceTolerance: 0.5, humanity: 0.5 } },
+      { id: "222a", text: "同じテーマを何時間も深掘りする", scores: { attractS: 3, attractF: 0.5, independence: 2, understandDesire: 1, conversationDensity: 1, silenceDependency: 0.5, lowTempEmotion: 0.5 } },
+      { id: "222b", text: "話題が次々飛んでいく", scores: { attractN: 3, attractF: 1, conversationDensity: 1, edginessTolerance: 1, vibeMatch: 1, innocenceTolerance: 0.5, humanity: 0.5 } },
       { id: "222c", text: "実用的で役立つ話が多い", scores: { attractS: 2, attractT: 2, independence: 1, dailyLifeFeel: 1, urbanSense: 0.5, understandDesire: 0.5 } },
-      { id: "222d", text: "抽象的で詩みたいな話をする", scores: { attractN: 2, attractT: 1, lateNightVibe: 2, lowTempEmotion: 1, understandDesire: 1, silenceDependency: 0.5 } },
+      { id: "222d", text: "抽象的で詩みたいな話をする", scores: { attractN: 2, attractF: 1.5, lateNightVibe: 2, lowTempEmotion: 1, understandDesire: 1, silenceDependency: 0.5 } },
     ],
   },
   {
@@ -297,9 +298,9 @@ const phase2IJ: readonly Question[] = [
     text: "気遣いの仕方、\n惹かれるのは？",
     choices: [
       { id: "224a", text: "言わないけど飲み物がいつも置いてある", scores: { attractF: 2, attractS: 1, caretakerDependency: 3, awkwardness: 1, loveExpression: 1, dailyLifeFeel: 0.5 } },
-      { id: "224b", text: "「眠そうだね」と先に気づく", scores: { attractT: 1, attractF: 2, understandDesire: 2, loveExpression: 1, caretakerDependency: 1, humanity: 0.5 } },
+      { id: "224b", text: "「眠そうだね」と先に気づく", scores: { attractT: 1, attractF: 2, attractN: 1.5, understandDesire: 2, loveExpression: 1, caretakerDependency: 1, humanity: 0.5 } },
       { id: "224c", text: "ドアを開ける、椅子を引く、自然", scores: { attractS: 2, urbanSense: 1, caretakerDependency: 1, awkwardness: 1, humanity: 1, dailyLifeFeel: 0.5 } },
-      { id: "224d", text: "話したくない時はそっとしてくれる", scores: { attractT: 2, distanceSense: 3, neglectTolerance: 1, silenceDependency: 1, lowTempEmotion: 0.5, understandDesire: 0.5 } },
+      { id: "224d", text: "話したくない時はそっとしてくれる", scores: { attractT: 2, attractN: 0.5, distanceSense: 3, neglectTolerance: 1, silenceDependency: 1, lowTempEmotion: 0.5, understandDesire: 0.5 } },
     ],
   },
   {
@@ -788,11 +789,13 @@ export const phase3Questions: Readonly<Record<Phase3Type, readonly Question[]>> 
 // 分岐ロジック
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+// 各軸の絶対値ではなく、ランダム回答ベースラインからの z-score で比較。
+// 元コードだと S/J/I に構造的に偏っていたので、ここで均す。
 export function determinePhase1Type(scores: AnalysisScores): Phase1Type {
-  const e = scores["attractE"] ?? 0
-  const i = scores["attractI"] ?? 0
-  const j = scores["attractJ"] ?? 0
-  const p = scores["attractP"] ?? 0
+  const e = zScore("attractE", scores["attractE"] ?? 0)
+  const i = zScore("attractI", scores["attractI"] ?? 0)
+  const j = zScore("attractJ", scores["attractJ"] ?? 0)
+  const p = zScore("attractP", scores["attractP"] ?? 0)
 
   const isE = e >= i
   const isJ = j >= p
@@ -804,10 +807,10 @@ export function determinePhase1Type(scores: AnalysisScores): Phase1Type {
 }
 
 export function determinePhase3Type(scores: AnalysisScores): Phase3Type {
-  const t = scores["attractT"] ?? 0
-  const f = scores["attractF"] ?? 0
-  const s = scores["attractS"] ?? 0
-  const n = scores["attractN"] ?? 0
+  const t = zScore("attractT", scores["attractT"] ?? 0)
+  const f = zScore("attractF", scores["attractF"] ?? 0)
+  const s = zScore("attractS", scores["attractS"] ?? 0)
+  const n = zScore("attractN", scores["attractN"] ?? 0)
 
   const isN = n >= s
   const isF = f >= t

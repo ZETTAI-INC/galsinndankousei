@@ -15,6 +15,7 @@ import { selectAdaptivePhase2, selectAdaptivePhase3 } from "@/lib/adaptive"
 import type { AnalysisAxis, AnalysisScores, Gender, Phase1Type, Phase3Type, Question } from "@/lib/types"
 import { LoadingAnalysis } from "@/components/LoadingAnalysis"
 import { PhaseLoading } from "@/components/PhaseLoading"
+import { logEvent } from "@/lib/logging"
 
 type Stage =
   | "gender"
@@ -85,6 +86,7 @@ export default function DiagnosisPage() {
     setGender(g)
     setStage("intro")
     setAnimKey((k) => k + 1)
+    logEvent({ type: "diagnosis_start", gender: g })
   }, [])
 
   const handleIntroDone = useCallback(() => {
@@ -97,6 +99,15 @@ export default function DiagnosisPage() {
       setStage("analyzing")
       localStorage.setItem("diagnosis-scores", JSON.stringify(finalScores))
       localStorage.setItem("diagnosis-gender", g)
+      // 結果は MBTI 確定が generateResult 側なので、ここでは scores だけ記録。
+      // result ページが別途 result イベントを送る運用にしてもいいが、
+      // 簡単のため finalScores だけログ。実 MBTI 名は別経路で取れる。
+      logEvent({
+        type: "result",
+        mbti: "pending", // result ページ側で判明後に追記する設計でもOK
+        gender: g,
+        scores: finalScores,
+      })
       timeoutRef.current = setTimeout(() => {
         router.push("/result")
       }, 5000)
@@ -105,7 +116,19 @@ export default function DiagnosisPage() {
   )
 
   const handleChoice = useCallback(
-    (choiceScores: Readonly<Partial<Record<AnalysisAxis, number>>>) => {
+    (
+      choiceScores: Readonly<Partial<Record<AnalysisAxis, number>>>,
+      choiceId: string,
+      questionId: number
+    ) => {
+      logEvent({
+        type: "answer",
+        questionId,
+        choiceId,
+        phaseIndex,
+        stage,
+      })
+
       // 履歴を保存（戻る用）
       historyRef.current = [
         ...historyRef.current,
@@ -126,20 +149,21 @@ export default function DiagnosisPage() {
         setPhaseIndex((i) => i + 1)
       } else {
         if (stage === "phase1") {
+          logEvent({ type: "phase_complete", phase: 1 })
           const type = determinePhase1Type(newScores)
           setPhase1Type(type)
-          // Phase 1終了時に適応的にPhase 2の質問を選ぶ
           const adaptiveQs = selectAdaptivePhase2(type, newScores)
           setAdaptivePhase2(adaptiveQs)
           setStage("loading1")
         } else if (stage === "phase2") {
+          logEvent({ type: "phase_complete", phase: 2 })
           const type = determinePhase3Type(newScores)
           setPhase3Type(type)
-          // Phase 2終了時に適応的にPhase 3の質問を選ぶ
           const adaptiveQs = selectAdaptivePhase3(type, newScores)
           setAdaptivePhase3(adaptiveQs)
           setStage("loading2")
         } else if (stage === "phase3") {
+          logEvent({ type: "phase_complete", phase: 3 })
           finish(newScores, gender)
         }
       }
@@ -294,7 +318,7 @@ export default function DiagnosisPage() {
             {currentQuestion.choices.map((choice, i) => (
               <button
                 key={choice.id}
-                onClick={() => handleChoice(choice.scores)}
+                onClick={() => handleChoice(choice.scores, choice.id, currentQuestion.id)}
                 className="choice-card animate-fade-in-right group"
                 style={{
                   animationDelay: `${0.15 + i * 0.08}s`,

@@ -1,6 +1,9 @@
 import type { AnalysisResult, AnalysisScores, Gender } from "./types"
 import { detectContradictions } from "./contradictions"
 import { createSeededRandom, hashScores } from "./seed"
+import { zScore, getRarityHighlights } from "./calibration"
+import { selectPredictions } from "./predictions"
+import { AXIS_LABELS } from "./types"
 
 interface AxisEntry {
   readonly key: string
@@ -972,19 +975,25 @@ const MBTI_DIMENSIONS: Record<string, readonly string[]> = {
   ESTJ: ["attractE", "attractS", "attractT", "attractJ"],
 }
 
+// 各軸を z-score 化してから合算する。
+// 元コードだと平均値が大きい軸（lowTempEmotion / humanity 等）に支配されて
+// 一部 MBTI タイプ（ISTJ / INFP）に集中する偏りがあった。
+// per-profile 正規化（profileZScore）も試したが、profile 内の軸矛盾を
+// 過大評価する副作用が出たので、global z-score のみに留める。
 function scoreMbti(
   profile: MbtiProfile,
   scores: AnalysisScores
 ): number {
-  // Personality axis score
   const axisScore = profile.axes.reduce((sum, axis, i) => {
     const weight = profile.axes.length - i
-    return sum + (scores[axis] ?? 0) * weight
+    return sum + zScore(axis, scores[axis] ?? 0) * weight
   }, 0)
 
-  // MBTI dimension score (weighted heavily)
   const dims = MBTI_DIMENSIONS[profile.type] ?? []
-  const dimScore = dims.reduce((sum, dim) => sum + (scores[dim] ?? 0) * 3, 0)
+  const dimScore = dims.reduce(
+    (sum, dim) => sum + zScore(dim, scores[dim] ?? 0) * 3,
+    0
+  )
 
   return axisScore + dimScore
 }
@@ -1422,6 +1431,21 @@ export function generateResult(
   // 矛盾検出
   const contradictions = detectContradictions(scores)
 
+  // 希少ポイント（z-score の絶対値が大きい軸 top3）
+  const rarityHighlights = getRarityHighlights(scores, 3).map((h) => ({
+    axis: h.axis,
+    label: AXIS_LABELS[h.axis as keyof typeof AXIS_LABELS] ?? h.axis,
+    topPercent: h.topPercent,
+    direction: h.direction,
+  }))
+
+  // Cross-axis predictions（「答えてないのに当てる」テキスト）
+  const predictions = selectPredictions(scores, 5, 2).map((p) => ({
+    id: p.id,
+    text: p.text,
+    category: p.category,
+  }))
+
   return {
     displayName: badge.displayName,
     displayType: topType,
@@ -1433,5 +1457,7 @@ export function generateResult(
     microTraits,
     mbtiRanking,
     contradictions,
+    rarityHighlights,
+    predictions,
   }
 }
