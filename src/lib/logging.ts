@@ -1,10 +1,13 @@
 /**
  * 匿名診断ログ。
  *
- * Phase 1: localStorage に貯める（オフライン優先・privacy配慮）。
- * Phase 2: Supabase / 自前API へ flush（後で配線するだけ）。
+ * 二系統:
+ *   - localStorage: 端末ローカルにバックアップ（オフライン耐性・最低限）
+ *   - Supabase:     リモート集計用。NEXT_PUBLIC_SUPABASE_URL/ANON_KEY が
+ *                   設定されている時だけ送る。設定なしでもアプリは動く。
  *
  * 何を取るか:
+ *   - diagnosis_start: 開始（gender 選択時）
  *   - answer: どの質問でどの選択肢を選んだか（軸の偏りや人気選択肢の把握）
  *   - phase_complete: フェーズ完了タイミング（離脱率分析）
  *   - result: 最終 MBTI と全 scores（タイプ分布・実ユーザー上位X% 計算用）
@@ -13,6 +16,7 @@
  */
 
 import type { AnalysisScores, Gender } from "./types"
+import { supabase } from "./supabase"
 
 type LogEvent =
   | {
@@ -78,11 +82,27 @@ function appendToStorage(event: LogEvent) {
   }
 }
 
-// 後で Supabase 等に差し替えるための fire-and-forget hook。
-// 今はネットワーク呼び出ししない（プライバシー / 余計なコスト避け）。
-function sendRemote(_event: LogEvent): void {
-  // TODO: Supabase 設定後にここで insert する
-  //   await supabase.from('diag_events').insert({...})
+// Supabase に fire-and-forget で送る。設定なしならスキップ。
+// エラーは握り潰す（ログ送信失敗で本体機能を止めたくない）。
+function sendRemote(event: LogEvent): void {
+  if (!supabase) return
+  if (typeof window === "undefined") return
+  const sid = getOrCreateSid()
+  const { type, ...payload } = event
+  void supabase
+    .from("diag_events")
+    .insert({
+      sid,
+      type,
+      payload,
+    })
+    .then(({ error }) => {
+      if (error && process.env.NODE_ENV !== "production") {
+        // 開発時だけコンソールに出す
+        // eslint-disable-next-line no-console
+        console.warn("[logging] supabase insert failed:", error.message)
+      }
+    })
 }
 
 export function logEvent(event: LogEvent): void {

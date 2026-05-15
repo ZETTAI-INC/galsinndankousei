@@ -7,23 +7,37 @@ import { LoadingAnalysis } from "@/components/LoadingAnalysis"
 import { ScrollReveal } from "@/components/ScrollReveal"
 import { generateLovedByResult } from "@/lib/loved-by"
 
+type MissingState = "no_self" | "no_attraction" | "no_data" | null
+
 export default function LovedByPage() {
   const [result, setResult] = useState<LovedByResult | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [missing, setMissing] = useState<MissingState>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const selfStored = localStorage.getItem("self-scores")
     const attractionStored = localStorage.getItem("diagnosis-scores")
 
+    // 逆診断 = 「あなたを好きになる人」を当てる。
+    // self-scores（自分自身のタイプ）がないと精度が出ない、必須化する。
     if (!selfStored && !attractionStored) {
-      setError("まず診断を受けてください")
+      setMissing("no_data")
+      setIsLoading(false)
+      return
+    }
+    if (!selfStored) {
+      setMissing("no_self")
+      setIsLoading(false)
+      return
+    }
+    if (!attractionStored) {
+      setMissing("no_attraction")
       setIsLoading(false)
       return
     }
 
-    const selfScores = selfStored ? JSON.parse(selfStored) : {}
-    const attractionScores = attractionStored ? JSON.parse(attractionStored) : {}
+    const selfScores = JSON.parse(selfStored)
+    const attractionScores = JSON.parse(attractionStored)
     const combinedScores: AnalysisScores = { ...attractionScores, ...selfScores }
 
     const lovedBy = generateLovedByResult(combinedScores)
@@ -33,18 +47,63 @@ export default function LovedByPage() {
 
   if (isLoading) return <LoadingAnalysis />
 
-  if (error || !result) {
+  if (missing) {
+    const config: Record<Exclude<MissingState, null>, { eyebrow: string; title: string; body: string; cta: string; href: string; secondary?: { label: string; href: string } }> = {
+      no_data: {
+        eyebrow: "まずは診断から",
+        title: "先に2つの診断が要ります",
+        body: "逆診断は「あなたを好きになる人」を当てる仕組み。\n精度を出すには、あなた自身のタイプ（自己診断）と、あなたが惹かれる相手のタイプ（メイン診断）の両方が必要です。",
+        cta: "メイン診断にすすむ",
+        href: "/diagnosis",
+        secondary: { label: "自己診断にすすむ", href: "/diagnosis-self" },
+      },
+      no_self: {
+        eyebrow: "あと1つ",
+        title: "自己診断が未完了",
+        body: "「あなたを好きになる人」を当てるには、あなた自身のタイプを知る必要があります。\n自己診断（24問・3分）を済ませると、ぴったり当てられるようになります。",
+        cta: "自己診断にすすむ",
+        href: "/diagnosis-self",
+      },
+      no_attraction: {
+        eyebrow: "あと1つ",
+        title: "メイン診断が未完了",
+        body: "あなたが惹かれる相手のタイプも合わせると、逆診断の精度が上がります。",
+        cta: "メイン診断にすすむ",
+        href: "/diagnosis",
+      },
+    }
+    const c = config[missing]
     return (
       <div className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
-        <p className="serif mb-8 text-[14px] text-white/60">
-          {error ?? "データがありません"}
-        </p>
-        <Link href="/" className="btn-secondary">
-          トップに戻る
-        </Link>
+        <div className="mx-auto max-w-md">
+          <p className="mb-4">
+            <span className="heading-eyebrow">{c.eyebrow}</span>
+          </p>
+          <h1 className="serif mb-6 text-[22px] font-light leading-[1.6] text-white/95">
+            {c.title}
+          </h1>
+          <p className="serif mb-10 whitespace-pre-line text-[14px] font-light leading-[2.0] tracking-wide text-white/65">
+            {c.body}
+          </p>
+          <div className="flex flex-col gap-3">
+            <Link href={c.href} className="btn-primary inline-block w-full text-center">
+              {c.cta}
+            </Link>
+            {c.secondary && (
+              <Link href={c.secondary.href} className="btn-secondary inline-block w-full text-center">
+                {c.secondary.label}
+              </Link>
+            )}
+            <Link href="/" className="mt-2 text-[12px] tracking-wide text-white/40 hover:text-white/70">
+              トップに戻る
+            </Link>
+          </div>
+        </div>
       </div>
     )
   }
+
+  if (!result) return null
 
   return (
     <div className="min-h-dvh px-6 py-20">

@@ -8,9 +8,13 @@ import { LoadingAnalysis } from "@/components/LoadingAnalysis"
 import { ShareImage } from "@/components/ShareImage"
 import { ScrollReveal } from "@/components/ScrollReveal"
 import { RadarChart } from "@/components/RadarChart"
+import { logEvent } from "@/lib/logging"
+import type { Gender } from "@/lib/types"
+import { determineSelfMbti } from "@/lib/match"
 
 export default function ResultPage() {
   const [result, setResult] = useState<AnalysisResult | null>(null)
+  const [selfMbti, setSelfMbti] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const shareRef = useRef<HTMLDivElement>(null)
@@ -43,6 +47,17 @@ export default function ResultPage() {
       }
     })()
 
+    // 自己診断スコアがあれば自分の MBTI も出す
+    try {
+      const selfStored = localStorage.getItem("self-scores")
+      if (selfStored) {
+        const selfScores = JSON.parse(selfStored)
+        setSelfMbti(determineSelfMbti(selfScores))
+      }
+    } catch {
+      // 無視
+    }
+
     fetch("/api/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,6 +76,15 @@ export default function ResultPage() {
             displayType: data.displayType,
             displayName: data.displayName,
           }))
+        }
+        // 結果ログ送信（MBTI 確定後）
+        if (scores) {
+          logEvent({
+            type: "result",
+            mbti: data.displayType,
+            gender: gender as Gender,
+            scores,
+          })
         }
       })
       .catch((err: Error) => {
@@ -149,11 +173,33 @@ export default function ResultPage() {
 
           {/* MBTI - 直下に明示 */}
           <p
-            className="serif animate-fade-in mb-10 text-[18px] tracking-[0.25em] text-[var(--accent)]"
+            className="serif animate-fade-in mb-8 text-[18px] tracking-[0.25em] text-[var(--accent)]"
             style={{ animationDelay: "0.7s" }}
           >
             {result.displayType} 系の人
           </p>
+
+          {/* あなた自身のMBTI スロット（自己診断済みなら表示・未診断なら CTA） */}
+          <div
+            className="animate-fade-in mx-auto mb-10 max-w-xs border border-white/10 px-5 py-4"
+            style={{ animationDelay: "0.9s" }}
+          >
+            <p className="mb-2 text-[10px] tracking-[0.25em] text-white/40">
+              あなた自身のタイプは
+            </p>
+            {selfMbti ? (
+              <p className="serif text-[16px] tracking-[0.2em] text-white/90">
+                {selfMbti} 系
+              </p>
+            ) : (
+              <Link
+                href="/diagnosis-self"
+                className="serif text-[13px] tracking-wide text-[var(--accent)]/80 underline-offset-4 hover:underline"
+              >
+                自己診断で確認する →
+              </Link>
+            )}
+          </div>
 
           {/* Divider */}
           <div
@@ -238,6 +284,35 @@ export default function ResultPage() {
             </div>
           )}
         </div>
+
+        {/* Cross-axis predictions - 「答えてないのに当たる」 ← Hero 直後に配置（コア体験） */}
+        {result.predictions && result.predictions.length > 0 && (
+          <section className="mb-20">
+            <ScrollReveal>
+              <p className="mb-6">
+                <span className="heading-eyebrow">聞いてないのに当たること</span>
+              </p>
+              <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
+                たぶん、<span className="highlight-pink">これ全部やってる。</span>
+              </p>
+            </ScrollReveal>
+
+            <div className="flex flex-col gap-4">
+              {result.predictions.map((p, i) => (
+                <ScrollReveal key={p.id} delay={i * 150}>
+                  <div
+                    className="border-l-2 border-[var(--accent)]/40 px-5 py-4"
+                    style={{ background: "rgba(212, 165, 184, 0.03)" }}
+                  >
+                    <p className="serif text-[14px] font-light leading-[2.0] tracking-[0.02em] text-white/85">
+                      {p.text}
+                    </p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Core Analysis */}
         <section className="mb-20">
@@ -359,59 +434,33 @@ export default function ResultPage() {
           </section>
         )}
 
-        {/* Cross-axis predictions - 「答えてないのに当たる」 */}
-        {result.predictions && result.predictions.length > 0 && (
-          <section className="mb-20">
-            <ScrollReveal>
-              <p className="mb-6">
-                <span className="heading-eyebrow">聞いてないのに当たること</span>
-              </p>
-              <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
-                たぶん、<span className="highlight-pink">これ全部やってる。</span>
-              </p>
-            </ScrollReveal>
-
-            <div className="flex flex-col gap-4">
-              {result.predictions.map((p, i) => (
-                <ScrollReveal key={p.id} delay={i * 150}>
-                  <div
-                    className="border-l-2 border-[var(--accent)]/40 px-5 py-4"
-                    style={{ background: "rgba(212, 165, 184, 0.03)" }}
-                  >
-                    <p className="serif text-[14px] font-light leading-[2.0] tracking-[0.02em] text-white/85">
-                      {p.text}
-                    </p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Micro Traits */}
+        {/* Micro Traits - 人物スケッチ（ナラティブ） */}
         <section className="mb-20">
           <ScrollReveal>
-            <p className="mb-6">
-              <span className="heading-eyebrow">あなたが惹かれる人の特徴</span>
-            </p>
-            <p className="serif mb-10 text-[18px] font-light tracking-wide text-white/95">
-              たぶんこういう人、<span className="highlight-pink">好きでしょ？</span>
+            <p className="mb-10">
+              <span className="heading-eyebrow">あなたが惹かれる人の輪郭</span>
             </p>
           </ScrollReveal>
 
-          <div className="flex flex-col gap-2">
-            {result.microTraits.map((trait, i) => (
-              <ScrollReveal
-                key={i}
-                className="flex items-start gap-3 py-1"
-                delay={i * 40}
-              >
-                <span className="mt-[10px] h-[1px] w-3 shrink-0 bg-pink-400/40" />
-                <span className="text-[13px] font-light leading-[1.9] tracking-[0.03em] text-white/65">
-                  {trait}
-                </span>
-              </ScrollReveal>
-            ))}
+          <div className="flex flex-col gap-6">
+            {(() => {
+              // 16個前後の trait を 4 段落にグルーピング、句点で繋いで人物スケッチに
+              const t = result.microTraits
+              const chunks: string[][] = []
+              const size = Math.max(3, Math.ceil(t.length / 4))
+              for (let i = 0; i < t.length; i += size) {
+                chunks.push(t.slice(i, i + size))
+              }
+              return chunks
+                .filter((g) => g.length > 0)
+                .map((group, i) => (
+                  <ScrollReveal key={i} delay={i * 200}>
+                    <p className="serif text-[15px] font-light leading-[2.3] tracking-[0.03em] text-white/82">
+                      {group.join("。") + "。"}
+                    </p>
+                  </ScrollReveal>
+                ))
+            })()}
           </div>
         </section>
 

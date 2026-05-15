@@ -155,7 +155,6 @@ const MBTI_PROFILES: readonly MbtiProfile[] = [
     ],
     microTraits: [
       "LINEが遅いのに長文",
-      "写真フォルダに空が多い",
       "感情説明が下手",
       "急に弱音を吐く",
       "深夜に散歩する",
@@ -1015,7 +1014,6 @@ const GENDERED_MICRO_TRAITS: Record<Gender, readonly { readonly trait: string; r
     { trait: "すっぴんの方がいい", axes: ["dailyLifeFeel", "humanity"] },
     { trait: "古着を着こなしてる", axes: ["urbanSense", "edginessTolerance"] },
     { trait: "天然で気づいてない", axes: ["innocenceTolerance", "humanity"] },
-    { trait: "LINEの文末に「。」をつけない", axes: ["lowTempEmotion", "distanceSense"] },
     { trait: "たまにタメ口になる", axes: ["vibeMatch", "innocenceTolerance"] },
     { trait: "鎖骨が綺麗", axes: ["urbanSense", "lowTempEmotion"] },
     { trait: "少し猫背", axes: ["dailyLifeFeel", "edginessTolerance"] },
@@ -1035,7 +1033,6 @@ const GENDERED_MICRO_TRAITS: Record<Gender, readonly { readonly trait: string; r
     { trait: "汗のかき方がきれい", axes: ["dailyLifeFeel", "humanity"] },
     { trait: "荷物を無言で持ってくれる", axes: ["caretakerDependency", "awkwardness"] },
     { trait: "車道側をさりげなく歩く", axes: ["caretakerDependency", "loveExpression"] },
-    { trait: "頭ぽんぽんしてくる", axes: ["loveExpression", "innocenceTolerance"] },
     { trait: "シャツのボタンが一個多く開いてる", axes: ["edginessTolerance", "urbanSense"] },
     { trait: "「送るよ」を当然のように言う", axes: ["caretakerDependency", "loveExpression"] },
     { trait: "笑うと急に幼くなる", axes: ["innocenceTolerance", "awkwardness"] },
@@ -1080,7 +1077,6 @@ export function generateResult(
   // 4. Micro Traits - スコアに応じて刺さるものを選ぶ
   const scoredMicroTraits: readonly { readonly trait: string; readonly axes: readonly string[] }[] = [
     // 低温感情系
-    { trait: "LINEが遅いのに、来ると長文", axes: ["lowTempEmotion", "awkwardness"] },
     { trait: "「別に」って言いながら迎えに来てくれる", axes: ["lowTempEmotion", "awkwardness"] },
     { trait: "感情の温度が読めないのに、急に優しい", axes: ["lowTempEmotion", "loveExpression"] },
     { trait: "褒め方が下手すぎて逆に刺さる", axes: ["lowTempEmotion", "awkwardness"] },
@@ -1088,17 +1084,14 @@ export function generateResult(
     // 深夜系
     { trait: "深夜にだけ本音のLINEが来る", axes: ["lateNightVibe", "lineTemperature"] },
     { trait: "夜になるとテンションが変わる", axes: ["lateNightVibe", "emotionalInstabilityTolerance"] },
-    { trait: "「眠れない」って2時に送ってくる", axes: ["lateNightVibe", "emotionalInstabilityTolerance"] },
     { trait: "深夜のコンビニに一緒に行ける", axes: ["lateNightVibe", "dailyLifeFeel"] },
     { trait: "夜の散歩に付き合ってくれる", axes: ["lateNightVibe", "silenceDependency"] },
     // 距離感系
     { trait: "近づきすぎない絶妙な距離感", axes: ["distanceSense", "silenceDependency"] },
-    { trait: "用がなくても隣にいる", axes: ["distanceSense", "silenceDependency"] },
     { trait: "既読無視するくせに会うとちゃんと見てくる", axes: ["distanceSense", "neglectTolerance"] },
     { trait: "自分から誘わないけど誘うと必ず来る", axes: ["distanceSense", "awkwardness"] },
     // 不器用系
     { trait: "感情説明が壊滅的に下手", axes: ["awkwardness", "lowTempEmotion"] },
-    { trait: "照れると目をそらす", axes: ["awkwardness", "innocenceTolerance"] },
     { trait: "不意に手が触れると固まる", axes: ["awkwardness", "loveExpression"] },
     { trait: "「ごめん寝てた」が口癖", axes: ["awkwardness", "dailyLifeFeel"] },
     { trait: "プレゼント選びで3時間悩んでる", axes: ["awkwardness", "caretakerDependency"] },
@@ -1111,7 +1104,6 @@ export function generateResult(
     // 沈黙系
     { trait: "無言が苦じゃない", axes: ["silenceDependency", "distanceSense"] },
     { trait: "会話が途切れても気まずくならない", axes: ["silenceDependency", "humanity"] },
-    { trait: "同じ部屋で別々のことをして満足してる", axes: ["silenceDependency", "independence"] },
     { trait: "目だけで会話が成立する", axes: ["silenceDependency", "understandDesire"] },
     // 愛情表現系
     { trait: "「好き」を言葉じゃなくて行動で見せてくる", axes: ["loveExpression", "awkwardness"] },
@@ -1122,25 +1114,19 @@ export function generateResult(
     { trait: "何も言ってないのに考えてることを当ててくる", axes: ["understandDesire", "silenceDependency"] },
     { trait: "前に話したことを全部覚えてる", axes: ["understandDesire", "caretakerDependency"] },
     { trait: "好きなものを語るとき急に早口になる", axes: ["understandDesire", "innocenceTolerance"] },
-    { trait: "体調の微妙な変化に気づく", axes: ["understandDesire", "caretakerDependency"] },
     // 救いたい欲系
     { trait: "強がってるけど夜は弱い", axes: ["saveDesire", "emotionalInstabilityTolerance"] },
     { trait: "一人で全部抱え込もうとする", axes: ["saveDesire", "independence"] },
     { trait: "寂しいのに「平気」って言う", axes: ["saveDesire", "awkwardness"] },
     { trait: "泣いてるのを見たことがない（でも泣いてる気がする）", axes: ["saveDesire", "lowTempEmotion"] },
     // 無邪気系
-    { trait: "急に変なこと言い出す", axes: ["innocenceTolerance", "vibeMatch"] },
-    { trait: "笑い声がうるさい", axes: ["innocenceTolerance", "vibeMatch"] },
     { trait: "好きなものの前でテンションおかしくなる", axes: ["innocenceTolerance", "humanity"] },
     { trait: "思いつきで「行こう」って言ってくる", axes: ["innocenceTolerance", "edginessTolerance"] },
     // 世話焼き系
-    { trait: "勝手にご飯作って待ってる", axes: ["caretakerDependency", "dailyLifeFeel"] },
     { trait: "「ちゃんと食べた？」が多い", axes: ["caretakerDependency", "lineTemperature"] },
     { trait: "気づいたら荷物持ってくれてる", axes: ["caretakerDependency", "awkwardness"] },
     // 都市感・独立系
     { trait: "一人でカフェに何時間もいれる", axes: ["urbanSense", "independence"] },
-    { trait: "服装に統一感がある", axes: ["urbanSense", "independence"] },
-    { trait: "写真フォルダに空が多い", axes: ["urbanSense", "lateNightVibe"] },
     { trait: "SNSのアイコンがたまに変わる", axes: ["urbanSense", "edginessTolerance"] },
     // LINE・連絡系（深掘り）
     { trait: "未読のまま放置するくせに会うと何事もない顔してる", axes: ["neglectTolerance", "lowTempEmotion"] },
@@ -1157,15 +1143,12 @@ export function generateResult(
     { trait: "深夜にカップ麺食べてる", axes: ["lateNightVibe", "dailyLifeFeel"] },
     { trait: "「なんでもいいよ」と言いつつ実は好みがある", axes: ["awkwardness", "lowTempEmotion"] },
     // ファッション・見た目系
-    { trait: "服のセンスに統一感がある", axes: ["urbanSense", "independence"] },
     { trait: "黒い服が多い", axes: ["lowTempEmotion", "urbanSense"] },
     { trait: "アクセサリーが少ないけど一つだけこだわりがある", axes: ["lowTempEmotion", "independence"] },
     { trait: "髪が少し長め（もしくは少し伸びてる）", axes: ["edginessTolerance", "dailyLifeFeel"] },
     { trait: "いつも同じ香りがする", axes: ["dailyLifeFeel", "urbanSense"] },
     { trait: "メガネを外した顔にドキッとする", axes: ["awkwardness", "understandDesire"] },
     // 癖・仕草系
-    { trait: "考え事のとき唇を触る", axes: ["understandDesire", "humanity"] },
-    { trait: "笑うとき口元を隠す", axes: ["awkwardness", "lowTempEmotion"] },
     { trait: "眠くなると急にテンション下がる", axes: ["dailyLifeFeel", "innocenceTolerance"] },
     { trait: "腕まくりの仕方が雑", axes: ["dailyLifeFeel", "edginessTolerance"] },
     { trait: "歩くのが少し早い", axes: ["independence", "distanceSense"] },
@@ -1177,7 +1160,6 @@ export function generateResult(
     { trait: "映画を観た後しばらく黙る", axes: ["silenceDependency", "understandDesire"] },
     { trait: "古い曲を急に流す", axes: ["lateNightVibe", "humanity"] },
     // 感情・関係性系
-    { trait: "怒り方が静か", axes: ["lowTempEmotion", "edginessTolerance"] },
     { trait: "嫉妬しても言わない", axes: ["lowTempEmotion", "neglectTolerance"] },
     { trait: "自分の非は認めるけど淡々としてる", axes: ["lowTempEmotion", "independence"] },
     { trait: "泣いてるのを見たことがない", axes: ["lowTempEmotion", "saveDesire"] },
@@ -1223,12 +1205,9 @@ export function generateResult(
     { trait: "感想を求めても「うん」しか返ってこない", axes: ["lowTempEmotion", "awkwardness"] },
     { trait: "他の人の話してるとき急に冷たい", axes: ["lowTempEmotion", "distanceSense"] },
     { trait: "目の動きで感情が全部わかる", axes: ["lowTempEmotion", "understandDesire"] },
-    { trait: "怒っても声を荒げない", axes: ["lowTempEmotion", "edginessTolerance"] },
     // 深夜系
     { trait: "深夜のドライブに付き合ってくれる", axes: ["lateNightVibe", "loveExpression"] },
     { trait: "夜中に急に画像送ってくる", axes: ["lateNightVibe", "lineTemperature"] },
-    { trait: "朝5時のLINEに返信がある", axes: ["lateNightVibe", "neglectTolerance"] },
-    { trait: "夜風に当たるのが好き", axes: ["lateNightVibe", "silenceDependency"] },
     { trait: "コンビニの帰り道で何も買わない", axes: ["lateNightVibe", "edginessTolerance"] },
     // 距離感系
     { trait: "誕生日を覚えてないけど好物は覚えてる", axes: ["distanceSense", "understandDesire"] },
@@ -1276,7 +1255,6 @@ export function generateResult(
     { trait: "サプライズに弱い", axes: ["innocenceTolerance", "emotionalInstabilityTolerance"] },
     // 世話焼き系
     { trait: "薬の飲み忘れを指摘してくる", axes: ["caretakerDependency", "humanity"] },
-    { trait: "「寝た？」のLINEが来る", axes: ["caretakerDependency", "lineTemperature"] },
     { trait: "風邪ひくと付きっきり", axes: ["caretakerDependency", "loveExpression"] },
     // 都市感・独立系
     { trait: "海外旅行を一人で行ける", axes: ["urbanSense", "independence"] },
@@ -1284,7 +1262,6 @@ export function generateResult(
     { trait: "ビールよりワイン派", axes: ["urbanSense", "lowTempEmotion"] },
     { trait: "持ち物が少ない", axes: ["urbanSense", "independence"] },
     // LINE系
-    { trait: "LINEのプロフィール写真が空", axes: ["lineTemperature", "distanceSense"] },
     { trait: "BGMが同じ曲ずっと", axes: ["silenceDependency", "lateNightVibe"] },
     { trait: "ステータスメッセージが意味深", axes: ["lateNightVibe", "edginessTolerance"] },
     { trait: "通知音を切ってる", axes: ["distanceSense", "neglectTolerance"] },

@@ -27,7 +27,12 @@ const rockRoll = RocknRoll_One({
   weight: ["400"],
 })
 
+// 本番URLが決まったら NEXT_PUBLIC_SITE_URL で上書き可能
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://admirable-churros-c3294a.netlify.app"
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "あなたが惹かれる16タイプ｜恋愛MBTI診断",
   description:
     "24の質問で、あなたが無意識に選んでしまう人を紐解く。恋愛MBTI診断。",

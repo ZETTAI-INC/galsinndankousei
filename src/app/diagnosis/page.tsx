@@ -99,15 +99,7 @@ export default function DiagnosisPage() {
       setStage("analyzing")
       localStorage.setItem("diagnosis-scores", JSON.stringify(finalScores))
       localStorage.setItem("diagnosis-gender", g)
-      // 結果は MBTI 確定が generateResult 側なので、ここでは scores だけ記録。
-      // result ページが別途 result イベントを送る運用にしてもいいが、
-      // 簡単のため finalScores だけログ。実 MBTI 名は別経路で取れる。
-      logEvent({
-        type: "result",
-        mbti: "pending", // result ページ側で判明後に追記する設計でもOK
-        gender: g,
-        scores: finalScores,
-      })
+      // result イベントは result ページが MBTI 確定後に送る（mbti 値が正しく入る）
       timeoutRef.current = setTimeout(() => {
         router.push("/result")
       }, 5000)

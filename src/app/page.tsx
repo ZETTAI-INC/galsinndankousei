@@ -36,14 +36,18 @@ export default function TopPage() {
           無意識に選んでしまう人を紐解く。
         </p>
 
-        {/* 重要な前提を明示 */}
+        {/* 重要な前提を明示 — 「あなた自身じゃない」を最初に */}
         <p
-          className="animate-fade-in mb-12 text-[11px] tracking-[0.1em] text-[var(--accent)]/70"
+          className="animate-fade-in mb-3 text-[11px] tracking-[0.15em] text-[var(--accent)]/80"
           style={{ animationDelay: "1.6s" }}
         >
-          ※ あなたが惹かれる相手のMBTIを当てる診断です
-          <br />
-          （自分自身のMBTIを当てるものではありません）
+          診断するのは「あなたが好きになる相手のタイプ」
+        </p>
+        <p
+          className="animate-fade-in mb-12 text-[10px] tracking-[0.1em] text-white/35"
+          style={{ animationDelay: "1.7s" }}
+        >
+          自分自身のMBTIを当てるなら、診断後に「自己診断」もどうぞ
         </p>
 
         <div
@@ -92,6 +96,16 @@ export default function TopPage() {
               ✦ 今日の沼り危険度
             </Link>
           </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-20 text-center">
+          <Link
+            href="/privacy"
+            className="text-[10px] tracking-[0.2em] text-white/25 hover:text-white/55"
+          >
+            プライバシーポリシー
+          </Link>
         </div>
       </div>
     </div>

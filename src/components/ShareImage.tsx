@@ -149,6 +149,38 @@ export const ShareImage = forwardRef<HTMLDivElement, ShareImageProps>(
           ))}
         </div>
 
+        {/* Predictions（聞いてないのに当たる）— 拡散の核 */}
+        {result.predictions && result.predictions.length > 0 && (
+          <div style={{ marginBottom: "28px" }}>
+            <div
+              style={{
+                fontSize: "10px",
+                color: "rgba(236, 72, 153, 0.5)",
+                marginBottom: "16px",
+                letterSpacing: "0.25em",
+              }}
+            >
+              聞いてないのに当たる
+            </div>
+            {result.predictions.slice(0, 2).map((p) => (
+              <div
+                key={p.id}
+                style={{
+                  borderLeft: "2px solid rgba(236, 72, 153, 0.4)",
+                  paddingLeft: "12px",
+                  marginBottom: "10px",
+                  fontFamily: "'Times New Roman', serif",
+                  fontSize: "13px",
+                  lineHeight: "1.9",
+                  color: "rgba(245, 240, 247, 0.85)",
+                }}
+              >
+                {p.text}
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Footer */}
         <div
           style={{
